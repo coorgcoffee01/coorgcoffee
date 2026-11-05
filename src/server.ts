@@ -47,6 +47,24 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+      if (url.pathname === "/api/create-order") {
+        const { handleCreateOrder } = await import("./server/razorpay-handlers");
+        return await handleCreateOrder(request);
+      }
+      if (url.pathname === "/api/verify-payment") {
+        const { handleVerifyPayment } = await import("./server/razorpay-handlers");
+        return await handleVerifyPayment(request);
+      }
+      if (url.pathname === "/api/send-email") {
+        const { handleSendWelcomeEmail } = await import("./server/email-handlers");
+        return await handleSendWelcomeEmail(request);
+      }
+      if (url.pathname === "/api/send-order-confirmation") {
+        const { handleSendOrderConfirmationEmail } = await import("./server/email-handlers");
+        return await handleSendOrderConfirmationEmail(request);
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

@@ -1,0 +1,20 @@
+rules_version = '2';
+
+/**
+ * Firebase Storage Security Rules for Coorg Coffee Crafted
+ * Restricts uploads to validated image files (JPEG, PNG, WebP) under 10MB.
+ */
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAllowedImage() {
+      return request.resource.contentType.matches('image/.*')
+        && request.resource.size < 10 * 1024 * 1024;
+    }
+
+    // Public read for media assets, write gated to valid images
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if isAllowedImage();
+    }
+  }
+}

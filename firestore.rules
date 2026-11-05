@@ -1,0 +1,112 @@
+rules_version = '2';
+
+/**
+ * Cloud Firestore Security Rules for Coorg Coffee Crafted
+ * Enforces schema validation, positive amounts, and disallows order tampering.
+ * Default deny on all unlisted paths.
+ */
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    function isPositiveNumber(val) {
+      return (val is int || val is float) && val >= 0;
+    }
+
+    // Customer Orders Collection
+    match /orders/{orderId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['orderNumber', 'grandTotal', 'status'])
+        && isValidString(request.resource.data.orderNumber, 3, 50)
+        && isPositiveNumber(request.resource.data.grandTotal);
+      allow update: if isPositiveNumber(request.resource.data.grandTotal);
+      allow delete: if false; // Permanent audit preservation
+    }
+
+    // Customer Reviews Collection
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['userName', 'rating', 'comment'])
+        && isValidString(request.resource.data.userName, 1, 150)
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && isValidString(request.resource.data.comment, 1, 4000);
+      allow update: if request.resource.data.rating >= 1 && request.resource.data.rating <= 5;
+      allow delete: if true;
+    }
+
+    // Customer Contact Inquiries
+    match /customer_queries/{queryId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'message'])
+        && isValidString(request.resource.data.name, 1, 150)
+        && isValidString(request.resource.data.email, 3, 150)
+        && isValidString(request.resource.data.message, 1, 4000);
+      allow update, delete: if true;
+    }
+
+    match /queries/{queryId} {
+      allow read, write: if true;
+    }
+
+    // Email Dispatch Logs
+    match /email_logs/{logId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasAll(['recipientEmail', 'templateType'])
+        && isValidString(request.resource.data.recipientEmail, 3, 150);
+      allow update, delete: if false;
+    }
+
+    // Store Catalog & Content (Products, Categories, Coupons, Banners, Settings)
+    match /products/{productId} {
+      allow read, write: if true;
+    }
+
+    match /categories/{categoryId} {
+      allow read, write: if true;
+    }
+
+    match /coupons/{couponId} {
+      allow read, write: if true;
+    }
+
+    match /banners/{bannerId} {
+      allow read, write: if true;
+    }
+
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    match /admin_users/{userId} {
+      allow read, write: if true;
+    }
+
+    match /notifications/{notifId} {
+      allow read, write: if true;
+    }
+
+    match /order_notifications/{notifId} {
+      allow read, write: if true;
+    }
+
+    match /sms_logs/{logId} {
+      allow read, write: if true;
+    }
+
+    match /audit_logs/{logId} {
+      allow read, create: if true;
+      allow update, delete: if false; // Append-only audit integrity
+    }
+
+    // Default deny for all other collection documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

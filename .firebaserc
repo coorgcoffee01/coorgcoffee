@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "coorg-coffees"
+  },
+  "targets": {
+    "coorg-coffees": {
+      "hosting": {
+        "store": [
+          "coorg-coffees"
+        ],
+        "admin": [
+          "coorg-coffees-admin"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
