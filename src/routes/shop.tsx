@@ -18,6 +18,13 @@ interface CategoryMeta {
 }
 
 const CATEGORY_META: Record<string, CategoryMeta> = {
+  'cat-chocolates': {
+    id: 'cat-chocolates',
+    name: 'Artisanal Coorg Chocolates',
+    sectionTitle: 'Artisanal Coorg Chocolates',
+    badge: '9 Varieties • Handcrafted Delights',
+    tagline: 'Artisanal chocolates handcrafted in Coorg hills: Milk Cashew, Vanilla Layers, Mango White, Dark Cashew, Sugar-Free Dark, Crispy Balls & Purple Blackcurrant.',
+  },
   'cat-beans': {
     id: 'cat-beans',
     name: 'AA Grade Beans (Medium & Dark Roast)',
@@ -88,9 +95,11 @@ function ProductCard({ product }: { product: Product }) {
             {product.categoryName}
           </span>
           <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#12100E]/85 text-white backdrop-blur-sm border border-white/10 w-fit">
-            {product.roastOptions && product.roastOptions.length > 1
-              ? 'Medium & Dark Roast'
-              : `${product.roastLevel} Roast`}
+            {product.categoryId === 'cat-chocolates'
+              ? 'Artisanal Chocolate'
+              : product.roastOptions && product.roastOptions.length > 1
+                ? 'Medium & Dark Roast'
+                : `${product.roastLevel} Roast`}
           </span>
           {someOutOfStock && (
             <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/90 text-black shadow-sm">
@@ -203,6 +212,7 @@ function ShopPage() {
       rawCat = new URLSearchParams(window.location.search).get('category') || undefined;
     }
     if (!rawCat) return 'cat-all';
+    if (rawCat === 'cat-chocolates' || rawCat === 'chocolates' || rawCat === 'chocolate') return 'cat-chocolates';
     if (rawCat === 'cat-beans' || rawCat === 'beans') return 'cat-beans';
     if (rawCat === 'cat-powder' || rawCat === 'powder') return 'cat-powder';
     if (rawCat === 'cat-filter' || rawCat === 'filter' || rawCat === 'filter-coffee') return 'cat-filter';
@@ -295,10 +305,10 @@ function ShopPage() {
             <span>ESTATE HARVEST CATALOGUE</span>
           </div>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl uppercase tracking-tight text-foreground">
-            OUR FRESHLY ROASTED COFFEES
+            OUR ESTATE COFFEES &amp; ARTISANAL CHOCOLATES
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-            Organized into 3 curated sections: AA Grade Beans (Medium &amp; Dark Roast), 100% Pure Coffee Powder, and Filter Coffee Powder (80:20 &amp; Specialty Grinds). Freshly roasted and valve packed in Coorg.
+            Discover shade-grown single-origin coffees and handcrafted luxury chocolates from the hills of Coorg. Freshly packed and shipped direct from the estate.
           </p>
         </div>
 

@@ -9,6 +9,14 @@ export const INITIAL_CATEGORIES: Category[] = [
     sortOrder: 1,
   },
   {
+    id: 'cat-chocolates',
+    name: 'Artisanal Coorg Chocolates',
+    slug: 'chocolates',
+    description: 'Handcrafted luxury chocolates: Milk Cashew, Dark Cashew, Mango White, Sugar-Free Dark, Crispy Balls & Purple Blackcurrant (9 Varieties)',
+    sortOrder: 2,
+    badgeColor: 'amber',
+  },
+  {
     id: 'cat-beans',
     name: 'AA Grade Beans (Medium & Dark Roast)',
     slug: 'beans',
@@ -720,6 +728,551 @@ export const ORIGINAL_PRODUCTS: Product[] = [
         active: true,
         weightGrams: 1000,
         deliveryFee: 60,
+      },
+    ],
+  },
+
+  // ==================== ARTISANAL COORG CHOCOLATES ====================
+  // 11. Premium Milk Cashew Chocolate
+  {
+    id: 'prod-milk-cashew-choco',
+    name: 'Premium Milk Cashew Chocolate',
+    slug: 'premium-milk-cashew-chocolate',
+    aliases: ['milk-cashew-chocolate', 'milk-cashew'],
+    tagline: 'Creamy Chocolate Meets Crunchy Cashew! 🍫',
+    shortDescription:
+      'Enjoy the rich and creamy taste of premium milk chocolate loaded with crunchy golden roasted cashew nuts.',
+    description: `Enjoy the rich and creamy taste of premium milk chocolate from the hills of Coorg.
+
+Handcrafted with generational chocolate-making mastery, our Premium Milk Cashew Chocolate blends velvety smooth milk chocolate with whole roasted cashews for the perfect balance of melt-in-the-mouth sweetness and nutty crunch.
+
+Crafted with no artificial preservatives, this chocolate is an irresistible treat for chocolate lovers of all ages and makes a delightful gift from the land of mist and honey.`,
+    whyYoullLoveIt: [
+      'Velvety smooth premium milk chocolate base',
+      'Loaded with crunchy roasted whole cashew nuts',
+      'Generational Coorg artisanal chocolate craftsmanship',
+      '250g generous seal-lock freshness tub',
+      'Perfect for gifting and festive celebrations',
+    ],
+    bestFor: [
+      'Everyday sweet indulgence',
+      'Festive & family gifting',
+      'Pairing with hot Coorg filter coffee',
+    ],
+    badges: ['Best Seller', 'Crunchy Cashew', '250g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/milk-cashew-card.jpeg',
+      '/products/chocolates/milk-cashew-tub.jpeg',
+      '/products/chocolates/milk-cashew-open.jpeg',
+    ],
+    ratingAvg: 4.96,
+    ratingCount: 142,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-milk-cashew-250',
+        productId: 'prod-milk-cashew-choco',
+        label: '250g Tub',
+        sku: 'CC-CHOC-MLK-CSH-250',
+        price: 350,
+        salePrice: null,
+        stock: 60,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 12. Milk Vanilla Cashew Chocolate
+  {
+    id: 'prod-milk-vanilla-cashew-choco',
+    name: 'Milk Vanilla Cashew Chocolate',
+    slug: 'milk-vanilla-cashew-chocolate',
+    aliases: ['vanilla-cashew-chocolate', 'milk-vanilla-cashew'],
+    tagline: 'Creamy Vanilla, Crunchy Cashew, Pure Chocolate Happiness! 🍫',
+    shortDescription:
+      'Dual-layered bliss combining sweet Madagascan-style vanilla cream with rich milk chocolate and roasted cashews.',
+    description: `A harmonious fusion of creamy vanilla and rich milk chocolate.
+
+Our Milk Vanilla Cashew Chocolate features an artisanal dual-layer structure: smooth white vanilla chocolate layered over rich milk chocolate, studded throughout with crispy roasted cashew nuts.
+
+Each bite delivers a symphony of aromatic vanilla sweetness, smooth dairy chocolate, and satisfying nutty crunch.`,
+    whyYoullLoveIt: [
+      'Artisanal dual-layer milk and vanilla chocolate profile',
+      'Rich aromatic vanilla infusion',
+      'Crunchy roasted cashew pieces in every bite',
+      'Sealed in 250g reusable airtight tub',
+    ],
+    bestFor: [
+      'Vanilla & white chocolate lovers',
+      'After-dinner dessert treats',
+      'Gift hampers & celebrations',
+    ],
+    badges: ['Dual Layer Delight', 'Creamy Vanilla', '250g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/milk-vanilla-cashew-card.jpeg',
+      '/products/chocolates/milk-vanilla-cashew-tub.jpeg',
+      '/products/chocolates/milk-vanilla-cashew-open.jpeg',
+    ],
+    ratingAvg: 4.94,
+    ratingCount: 118,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-van-cashew-250',
+        productId: 'prod-milk-vanilla-cashew-choco',
+        label: '250g Tub',
+        sku: 'CC-CHOC-VAN-CSH-250',
+        price: 360,
+        salePrice: null,
+        stock: 50,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 13. Premium Mango White Chocolate
+  {
+    id: 'prod-mango-white-choco',
+    name: 'Premium Mango White Chocolate',
+    slug: 'premium-mango-white-chocolate',
+    aliases: ['mango-white-chocolate', 'mango-chocolate'],
+    tagline: 'A Taste of Tropical Mango in Every Bite! 🥭',
+    shortDescription:
+      'Vibrant golden mango-infused creamy white chocolate cubes bursting with luscious tropical sweetness.',
+    description: `Transport your senses to tropical orchards with our Premium Mango White Chocolate.
+
+Infused with natural ripe mango essence, this golden yellow chocolate marries rich, buttery white cocoa butter with the tangy sweetness of sun-ripened tropical mangoes.
+
+Cut into generous artisan cubes that melt smoothly on your tongue, it is an exotic, refreshing spin on gourmet chocolate.`,
+    whyYoullLoveIt: [
+      'Sun-ripened natural mango tropical flavor profile',
+      'Creamy white chocolate cocoa butter melt',
+      'Striking golden mango yellow color',
+      '250g tamper-evident sealed tub',
+    ],
+    bestFor: [
+      'Tropical fruit & mango lovers',
+      'Unique gifting surprise',
+      'Kids & dessert platters',
+    ],
+    badges: ['Tropical Favorite', 'Real Mango Flavor', '250g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/mango-white-card.jpeg',
+      '/products/chocolates/mango-white-tub.jpeg',
+      '/products/chocolates/mango-white-open.jpeg',
+    ],
+    ratingAvg: 4.98,
+    ratingCount: 165,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-mango-white-250',
+        productId: 'prod-mango-white-choco',
+        label: '250g Tub',
+        sku: 'CC-CHOC-MNG-WHT-250',
+        price: 375,
+        salePrice: null,
+        stock: 45,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 14. Premium Dark Cashew Chocolate
+  {
+    id: 'prod-dark-cashew-choco',
+    name: 'Premium Dark Cashew Chocolate',
+    slug: 'premium-dark-cashew-chocolate',
+    aliases: ['dark-cashew-chocolate', 'dark-cashew'],
+    tagline: 'Bold Dark Chocolate, Crunchy Cashew, Pure Happiness! 🍫',
+    shortDescription:
+      'Intense high-cocoa dark chocolate paired with crisp hand-roasted cashew nuts for a sophisticated bittersweet bite.',
+    description: `For the discerning dark chocolate connoisseur.
+
+Our Premium Dark Cashew Chocolate pairs bold, deep dark cocoa with crunchy, golden-roasted cashew nuts sourced directly from South Indian estates.
+
+The deep roasted cocoa profile tempers the natural sweetness, creating a complex, satisfying bittersweet flavor that lingers delightfully.
+
+Net Weight: 250g (Price per 100g: ₹144/-).`,
+    whyYoullLoveIt: [
+      'Deep, antioxidant-rich dark cocoa blend',
+      'Generously embedded with roasted whole cashew nuts',
+      'Balanced bittersweet profile with low sugar perception',
+      '250g resealable freshness pack',
+    ],
+    bestFor: [
+      'Dark chocolate aficionados',
+      'Pairing with dark roast espresso',
+      'Healthy conscious snacking',
+    ],
+    badges: ['Bold Cocoa', 'Roasted Cashew', '₹144/100g'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/dark-cashew-card.jpeg',
+      '/products/chocolates/dark-cashew-tub.jpeg',
+      '/products/chocolates/dark-cashew-open.jpeg',
+    ],
+    ratingAvg: 4.95,
+    ratingCount: 130,
+    featured: true,
+    accentColor: 'brown',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-dark-cashew-250',
+        productId: 'prod-dark-cashew-choco',
+        label: '250g Tub',
+        sku: 'CC-CHOC-DRK-CSH-250',
+        price: 350,
+        salePrice: null,
+        stock: 55,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 15. Premium Dark Sugar-Free Chocolate
+  {
+    id: 'prod-dark-sugar-free-choco',
+    name: 'Premium Dark Sugar-Free Chocolate',
+    slug: 'premium-dark-sugar-free-chocolate',
+    aliases: ['sugar-free-dark-chocolate', 'sugar-free-chocolate'],
+    tagline: 'Pure Dark Indulgence, Without Added Sugar! 🍫',
+    shortDescription:
+      'Zero added sugar, 100% pure dark chocolate satisfaction. Guilt-free artisanal dark chocolate triangles.',
+    description: `Indulge without compromise with our Premium Dark Sugar-Free Chocolate.
+
+Crafted specifically for diabetic-friendly, keto, and health-conscious lifestyles, this chocolate offers the full aromatic intensity of fine estate dark cocoa without any added refined sugar.
+
+Each triangular artisan piece provides pure cocoa richness and silky mouthfeel, letting the authentic flavor of the cocoa bean take center stage.
+
+Net Weight: 150g (Price per 100g: ₹256.67).`,
+    whyYoullLoveIt: [
+      'Zero added sugar formula',
+      'Rich dark cocoa with zero bitter aftertaste',
+      'Diabetic-friendly & keto compatible',
+      '150g freshness-sealed tub',
+    ],
+    bestFor: [
+      'Diabetic & keto diets',
+      'Calorie-conscious dark chocolate fans',
+      'Clean eating lifestyles',
+    ],
+    badges: ['Zero Added Sugar', 'Keto Friendly', '150g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/dark-sugar-free-card.jpeg',
+      '/products/chocolates/dark-sugar-free-tub.jpeg',
+      '/products/chocolates/dark-sugar-free-open.jpeg',
+    ],
+    ratingAvg: 4.93,
+    ratingCount: 94,
+    featured: true,
+    accentColor: 'brown',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-dark-sugar-free-150',
+        productId: 'prod-dark-sugar-free-choco',
+        label: '150g Tub',
+        sku: 'CC-CHOC-DRK-SF-150',
+        price: 385,
+        salePrice: null,
+        stock: 40,
+        active: true,
+        weightGrams: 150,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 16. Premium Dark Chocolate Crispy Balls
+  {
+    id: 'prod-dark-crispy-balls',
+    name: 'Premium Dark Chocolate Crispy Balls',
+    slug: 'premium-dark-chocolate-crispy-balls',
+    aliases: ['dark-crispy-balls', 'crispy-dark-balls'],
+    tagline: 'Crunchy on the Inside, Rich Chocolate on the Outside! 🍫',
+    shortDescription:
+      'Malted crispy cereal centers enrobed in thick layers of decadent dark chocolate. The ultimate crunch snack!',
+    description: `COORG COFFEE — Crunch Into Happiness!
+
+Our Premium Dark Chocolate Crispy Balls bring together the satisfying crunch of toasted malted cereal centers wrapped in a thick, velvety shell of premium dark chocolate.
+
+Light, airy, yet deeply chocolaty, they are impossibly addictive and impossible to stop at just one.
+
+Net Weight: 250g (Price per 100g: ₹178/-).`,
+    whyYoullLoveIt: [
+      'Ultra-crunchy toasted malted core',
+      'Generous thick enrobing of dark chocolate',
+      'Bite-sized snacking perfection',
+      '250g party-ready sharing tub',
+    ],
+    bestFor: [
+      'Movie night & binge snacking',
+      'Kids & party dessert toppings',
+      'Coffee table snacks',
+    ],
+    badges: ['Crunchy Sensation', 'Dark Enrobed', '250g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/dark-crispy-balls-card.jpeg',
+      '/products/chocolates/dark-crispy-balls-tub.jpeg',
+      '/products/chocolates/dark-crispy-balls-open.jpeg',
+    ],
+    ratingAvg: 4.97,
+    ratingCount: 152,
+    featured: true,
+    accentColor: 'brown',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-dark-crispy-balls-250',
+        productId: 'prod-dark-crispy-balls',
+        label: '250g Tub',
+        sku: 'CC-CHOC-DRK-BALLS-250',
+        price: 445,
+        salePrice: null,
+        stock: 50,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 17. Premium Mixed Assorted Chocolates
+  {
+    id: 'prod-mixed-assorted-choco',
+    name: 'Premium Mixed Assorted Chocolates',
+    slug: 'premium-mixed-assorted-chocolates',
+    aliases: ['mixed-assorted-chocolates', 'assorted-chocolates'],
+    tagline: 'A World of Chocolate Flavours in Every Box! 🍫',
+    shortDescription:
+      'The grand variety box featuring milk cashew, dark cashew, vanilla layers, and tropical fruit bites.',
+    description: `Can’t choose just one? Experience the complete Coorg chocolate collection in one stunning box.
+
+Our Premium Mixed Assorted Chocolates combine hand-selected pieces from our entire chocolate range: rich milk cashew, intense dark cashew, dual-layer vanilla, and fruity tropical bites.
+
+Every piece offers a distinct texture and flavor profile, making this the crown jewel for gifting.
+
+Net Weight: 250g (Price per 100g: ₹142/-).`,
+    whyYoullLoveIt: [
+      'Hand-selected variety of milk, dark, vanilla & fruit chocolates',
+      'Assorted textures: nutty, creamy, and layered',
+      'Unmatched variety for the whole family',
+      '250g presentation gift tub',
+    ],
+    bestFor: [
+      'The ultimate chocolate gift',
+      'Tasting & sampling multiple flavors',
+      'Dinner parties & family sharing',
+    ],
+    badges: ['Grand Assortment', 'All Flavors In One', '250g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/mixed-assorted-card.jpeg',
+      '/products/chocolates/mixed-assorted-tub.jpeg',
+      '/products/chocolates/mixed-assorted-open.jpeg',
+    ],
+    ratingAvg: 4.99,
+    ratingCount: 210,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-mixed-assorted-250',
+        productId: 'prod-mixed-assorted-choco',
+        label: '250g Tub',
+        sku: 'CC-CHOC-ASSRT-250',
+        price: 355,
+        salePrice: null,
+        stock: 65,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 18. Premium Blackcurrant Chocolate
+  {
+    id: 'prod-blackcurrant-choco',
+    name: 'Premium Blackcurrant Chocolate',
+    slug: 'premium-blackcurrant-chocolate',
+    aliases: ['blackcurrant-chocolate', 'purple-chocolate'],
+    tagline: 'A Burst of Berry Goodness in Every Bite! 💜',
+    shortDescription:
+      'Exquisite purple chocolate infused with tangy wild blackcurrants and creamy cocoa butter.',
+    description: `COORG COFFEE — Taste the Colour of Happiness!
+
+Crafted for fruit and berry enthusiasts, our Premium Blackcurrant Chocolate features an eye-catching royal purple hue and an explosion of tangy, sweet European-style blackcurrant berries.
+
+The natural berry tartness harmonizes seamlessly with rich cocoa butter, creating a refreshing sweet-tart chocolate experience like no other.
+
+Net Weight: 250g (Price per 100g: ₹152/-).`,
+    whyYoullLoveIt: [
+      'Vibrant natural royal purple chocolate aesthetic',
+      'Sweet & tangy blackcurrant berry burst',
+      'Silky smooth cocoa butter melt',
+      '250g airtight freshness tub',
+    ],
+    bestFor: [
+      'Berry & dark fruit lovers',
+      'Instagrammable dessert platters',
+      'Unique gourmet gift hampers',
+    ],
+    badges: ['Wild Berry Infusion', 'Royal Purple', '250g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/blackcurrant-card.jpeg',
+      '/products/chocolates/blackcurrant-tub.jpeg',
+      '/products/chocolates/blackcurrant-open.jpeg',
+    ],
+    ratingAvg: 4.96,
+    ratingCount: 125,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-blackcurrant-250',
+        productId: 'prod-blackcurrant-choco',
+        label: '250g Tub',
+        sku: 'CC-CHOC-BLKCRNT-250',
+        price: 380,
+        salePrice: null,
+        stock: 40,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 19. White Chocolate Crispy Balls
+  {
+    id: 'prod-white-crispy-balls',
+    name: 'White Chocolate Crispy Balls',
+    slug: 'white-chocolate-crispy-balls',
+    aliases: ['white-crispy-balls', 'crispy-white-balls'],
+    tagline: 'Creamy White Chocolate with a Crunchy Surprise! 🤍',
+    shortDescription:
+      'Golden toasted crispy malt balls smothered in thick, creamy vanilla white chocolate.',
+    description: `COORG COFFEE — Indulge in the Creamy Crisp Goodness!
+
+Our White Chocolate Crispy Balls combine an airy, ultra-crisp malted center with a luscious, buttery coat of sweet white chocolate.
+
+Each pearl is delicately smooth on the outside with an addictive snap on the inside. Perfect as a standalone indulgence or sprinkled over ice cream and baked desserts.
+
+Net Weight: 250g (Price per 100g: ₹178/-).`,
+    whyYoullLoveIt: [
+      'Silky sweet white chocolate enrobing',
+      'Crunchy toasted malted center with loud snap',
+      'Gourmet ice cream & cake topper',
+      '250g freshness sealed tub',
+    ],
+    bestFor: [
+      'White chocolate fans',
+      'Dessert & ice cream decoration',
+      'All-day crunchy snacking',
+    ],
+    badges: ['Crispy Center', 'Creamy White', '250g Tub'],
+    roastLevel: 'Artisanal Chocolate',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-chocolates',
+    categoryName: 'Artisanal Chocolates',
+    images: [
+      '/products/chocolates/white-crispy-balls-card.jpeg',
+      '/products/chocolates/white-crispy-balls-tub.jpeg',
+      '/products/chocolates/white-crispy-balls-open.jpeg',
+    ],
+    ratingAvg: 4.95,
+    ratingCount: 138,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-01T00:00:00Z',
+    updatedAt: '2026-11-13T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-white-crispy-balls-250',
+        productId: 'prod-white-crispy-balls',
+        label: '250g Tub',
+        sku: 'CC-CHOC-WHT-BALLS-250',
+        price: 445,
+        salePrice: null,
+        stock: 45,
+        active: true,
+        weightGrams: 250,
+        deliveryFee: 70,
       },
     ],
   },

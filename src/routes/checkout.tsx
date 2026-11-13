@@ -113,7 +113,7 @@ function CheckoutPage() {
                       <div>
                         <p className="font-bold text-xs sm:text-sm text-foreground">{item.productName}</p>
                         <p className="text-[11px] text-muted-foreground">
-                          Qty: {item.quantity} • {item.variantLabel} • {item.grindOption || 'Whole Beans'}
+                          Qty: {item.quantity} • {item.variantLabel} {item.grindOption ? `• ${item.grindOption}` : ''}
                         </p>
                       </div>
                     </div>
@@ -300,7 +300,7 @@ function CheckoutPage() {
       quantity: i.quantity,
       lineTotal: i.unitPrice * i.quantity,
       image: i.image,
-      grindOption: i.grindOption || 'South Indian Filter Grind',
+      grindOption: i.grindOption || '',
     }));
 
     const newOrder: Order = {

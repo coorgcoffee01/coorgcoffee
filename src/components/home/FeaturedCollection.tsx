@@ -90,6 +90,28 @@ const CATEGORY_SHOWCASE: CategoryShowcaseMeta[] = [
       tag: 'border-[#C89B3C]/30 text-[#C89B3C]',
     },
   },
+  {
+    id: 'cat-chocolates',
+    name: 'Artisanal Chocolates',
+    shortName: 'Artisanal Chocolates (9)',
+    roastTag: 'Handcrafted in Coorg • 9 Varieties',
+    countBadge: '9 Varieties',
+    startingPrice: 350,
+    image: '/products/chocolates/milk-cashew-card.jpeg',
+    description:
+      'Artisanal handcrafted luxury chocolates from the hills of Coorg. Creamy milk cashews, vanilla layers, mango white chocolate, bold dark cashews, crispy balls, and sugar-free treats.',
+    highlights: [
+      'Loaded with crunchy whole roasted cashews & fruits',
+      'Zero added sugar & crispy malted ball options',
+      'Direct from Coorg estate chocolate artisans',
+    ],
+    deliveryPerk: '250g Freshness Sealed Tubs',
+    accentClass: {
+      badge: 'bg-amber-600/10 text-amber-600 dark:text-[#C89B3C] border-amber-600/30',
+      button: 'bg-[#C89B3C] text-black hover:bg-[#b08732]',
+      tag: 'border-[#C89B3C]/30 text-[#C89B3C]',
+    },
+  },
 ];
 
 export const FeaturedCollection: React.FC = () => {
@@ -115,6 +137,7 @@ export const FeaturedCollection: React.FC = () => {
     'cat-beans': allProducts.filter((p) => p.categoryId === 'cat-beans'),
     'cat-powder': allProducts.filter((p) => p.categoryId === 'cat-powder'),
     'cat-filter': allProducts.filter((p) => p.categoryId === 'cat-filter'),
+    'cat-chocolates': allProducts.filter((p) => p.categoryId === 'cat-chocolates'),
   };
 
   return (
@@ -255,7 +278,9 @@ export const FeaturedCollection: React.FC = () => {
                       {/* Included Roasts Mini-Shelf with Touch-Active Feedback */}
                       <div className="space-y-2 pt-2 border-t border-border/80">
                         <div className="text-[10px] uppercase font-black tracking-widest text-muted-foreground flex items-center justify-between">
-                          <span>INCLUDED ROASTS ({catProducts.length})</span>
+                          <span>
+                            {cat.id === 'cat-chocolates' ? 'INCLUDED VARIETIES' : 'INCLUDED ROASTS'} ({catProducts.length})
+                          </span>
                           <span className="text-[#C89B3C] font-bold">FROM ₹{IS_TEST_PRICE_MODE ? 1 : cat.startingPrice}</span>
                         </div>
 

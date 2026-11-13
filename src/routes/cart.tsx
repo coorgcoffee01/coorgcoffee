@@ -87,7 +87,7 @@ function CartPage() {
                       <div>
                         <h3 className="font-display text-xl text-foreground">{item.productName}</h3>
                         <p className="text-xs text-[#C89B3C] font-semibold">
-                          {item.variantLabel} {item.roastLevel ? `• ${item.roastLevel}` : ''} • {item.grindOption}
+                          {item.variantLabel} {item.roastLevel ? `• ${item.roastLevel}` : ''} {item.grindOption ? `• ${item.grindOption}` : ''}
                         </p>
                         <p className="text-xs text-muted-foreground mt-0.5">SKU: {item.sku}</p>
                       </div>

@@ -243,7 +243,7 @@ export function initStoreData() {
     setStored(STORAGE_KEYS.NOTIFICATIONS, INITIAL_NOTIFICATIONS);
   }
 
-  // Ensure any cached products have updated grind options and clean badges
+  // Ensure any cached products have updated grind options and clean badges, and include new products
   const storedProducts = getStored<Product[] | null>(STORAGE_KEYS.PRODUCTS, null);
   if (storedProducts && Array.isArray(storedProducts)) {
     let hasChanged = false;
@@ -263,8 +263,27 @@ export function initStoreData() {
       }
       return updated;
     });
+
+    // Append any newly added initial products (e.g. chocolates)
+    const existingIds = new Set(cleaned.map((p) => p.id));
+    const missing = INITIAL_PRODUCTS.filter((p) => !existingIds.has(p.id));
+    if (missing.length > 0) {
+      hasChanged = true;
+      cleaned.push(...missing);
+    }
+
     if (hasChanged) {
       setStored(STORAGE_KEYS.PRODUCTS, cleaned);
+    }
+  }
+
+  // Ensure any newly added categories (e.g. cat-chocolates) exist in stored categories
+  const storedCategories = getStored<Category[] | null>(STORAGE_KEYS.CATEGORIES, null);
+  if (storedCategories && Array.isArray(storedCategories)) {
+    const existingCatIds = new Set(storedCategories.map((c) => c.id));
+    const missingCats = INITIAL_CATEGORIES.filter((c) => !existingCatIds.has(c.id));
+    if (missingCats.length > 0) {
+      setStored(STORAGE_KEYS.CATEGORIES, [...storedCategories, ...missingCats]);
     }
   }
 

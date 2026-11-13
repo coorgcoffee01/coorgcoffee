@@ -91,6 +91,15 @@ async function generateStatic() {
     '/product/coorg-mist-blend-filter-coffee',
     '/product/espresso-coffee-powder',
     '/product/moka-pot-coffee-powder',
+    '/product/premium-milk-cashew-chocolate',
+    '/product/milk-vanilla-cashew-chocolate',
+    '/product/premium-mango-white-chocolate',
+    '/product/premium-dark-cashew-chocolate',
+    '/product/premium-dark-sugar-free-chocolate',
+    '/product/premium-dark-chocolate-crispy-balls',
+    '/product/premium-mixed-assorted-chocolates',
+    '/product/premium-blackcurrant-chocolate',
+    '/product/white-chocolate-crispy-balls',
   ];
 
   const storeCount = await renderRoutes(ssr, storeRoutes, storePublicDir, 'Storefront');

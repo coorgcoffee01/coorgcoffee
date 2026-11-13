@@ -21,8 +21,35 @@ function Index() {
       {/* Trust Strip */}
       <TrustStrip />
 
-      {/* Featured Coffee Collection */}
+      {/* Featured Coffee & Chocolate Collection */}
       <FeaturedCollection />
+
+      {/* Artisanal Chocolates Feature Banner */}
+      <section className="py-12 sm:py-16 px-4 md:px-8 bg-gradient-to-r from-[#1C1612] via-[#2A1F18] to-[#1C1612] text-white border-y border-[#C89B3C]/30 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
+          <div className="space-y-3 max-w-2xl text-center lg:text-left">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#C89B3C]/20 border border-[#C89B3C]/40 text-[#C89B3C] text-[11px] font-black uppercase tracking-widest">
+              <span>✨ NEW ESTATE RELEASE</span>
+            </div>
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white leading-tight">
+              HANDCRAFTED COORG <span className="text-[#C89B3C]">ARTISANAL CHOCOLATES</span>
+            </h2>
+            <p className="text-sm sm:text-base text-[#D8C7B2] leading-relaxed">
+              From creamy roasted milk cashews and Madagascan-style vanilla layers to tropical golden mango, bold dark chocolates, crispy cereal pearls, and sugar-free treats. Handcrafted in micro-batches with love from Madikeri estates.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+            <Link
+              to="/shop"
+              search={{ category: 'cat-chocolates' }}
+              className="px-8 py-4 rounded-full bg-[#C89B3C] text-black font-extrabold text-xs uppercase tracking-widest hover:bg-[#b08732] active:scale-95 transition-all shadow-xl shadow-[#C89B3C]/20 flex items-center gap-2"
+            >
+              <span>EXPLORE ALL 9 CHOCOLATES 🍫</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Why Choose Us Estate Difference */}
       <WhyChooseUs />

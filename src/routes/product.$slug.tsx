@@ -62,7 +62,9 @@ function ProductDetailPage() {
 
   const [selectedImage, setSelectedImage] = useState(product.images[0] || '');
   const [selectedVariantId, setSelectedVariantId] = useState(firstVariant.variantId);
-  const [selectedGrind, setSelectedGrind] = useState(product.grindOptions[0] || 'South Indian Filter Grind');
+  const [selectedGrind, setSelectedGrind] = useState(
+    product.grindOptions && product.grindOptions.length > 0 ? product.grindOptions[0] : ''
+  );
   const [selectedRoast, setSelectedRoast] = useState(
     product.roastOptions && product.roastOptions.length > 0 ? product.roastOptions[0] : product.roastLevel
   );
@@ -329,30 +331,32 @@ function ProductDetailPage() {
               </div>
             )}
 
-            {/* Grind Option Selection */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold uppercase tracking-wider text-foreground block">
-                Select Grind Option
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {product.grindOptions.map((grind) => {
-                  const isSelected = grind === selectedGrind;
-                  return (
-                    <button
-                      key={grind}
-                      onClick={() => setSelectedGrind(grind)}
-                      className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all min-h-[44px] ${
-                        isSelected
-                          ? 'bg-foreground text-background shadow-md'
-                          : 'bg-card border border-border text-foreground hover:bg-muted'
-                      }`}
-                    >
-                      {grind}
-                    </button>
-                  );
-                })}
+            {/* Grind Option Selection (for Coffee) */}
+            {product.grindOptions && product.grindOptions.length > 0 && (
+              <div className="space-y-3">
+                <label className="text-xs font-bold uppercase tracking-wider text-foreground block">
+                  Select Grind Option
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {product.grindOptions.map((grind) => {
+                    const isSelected = grind === selectedGrind;
+                    return (
+                      <button
+                        key={grind}
+                        onClick={() => setSelectedGrind(grind)}
+                        className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all min-h-[44px] ${
+                          isSelected
+                            ? 'bg-foreground text-background shadow-md'
+                            : 'bg-card border border-border text-foreground hover:bg-muted'
+                        }`}
+                      >
+                        {grind}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="space-y-4 pt-4 border-t border-border">
               <div className="flex items-center space-x-4">
@@ -468,7 +472,9 @@ function ProductDetailPage() {
               {/* Best For */}
               {product.bestFor && product.bestFor.length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="font-display text-sm text-foreground uppercase tracking-wider">BEST FOR BREWING:</h4>
+                  <h4 className="font-display text-sm text-foreground uppercase tracking-wider">
+                    {product.categoryId === 'cat-chocolates' ? 'BEST ENJOYED FOR:' : 'BEST FOR BREWING:'}
+                  </h4>
                   <div className="flex flex-wrap gap-2">
                     {product.bestFor.map((bf, idx) => (
                       <span

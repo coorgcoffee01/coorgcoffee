@@ -129,7 +129,7 @@ export const CartDrawer: React.FC = () => {
                         </button>
                       </div>
                       <p className="text-xs text-[#C89B3C] font-semibold mt-0.5">
-                        {item.variantLabel} {item.roastLevel ? `• ${item.roastLevel}` : ''} • {item.grindOption || 'Filter Grind'}
+                        {item.variantLabel} {item.roastLevel ? `• ${item.roastLevel}` : ''} {item.grindOption ? `• ${item.grindOption}` : ''}
                       </p>
                     </div>
 
