@@ -197,9 +197,16 @@ export function initFirestoreSync() {
   }
 }
 
+const CATALOG_DATA_VERSION = '2026-11-14-v6';
+
 export function initStoreData() {
   if (typeof window === 'undefined') return;
-  if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
+  const currentVer = localStorage.getItem('coorg_catalog_version');
+  if (currentVer !== CATALOG_DATA_VERSION) {
+    setStored(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
+    setStored(STORAGE_KEYS.CATEGORIES, INITIAL_CATEGORIES);
+    localStorage.setItem('coorg_catalog_version', CATALOG_DATA_VERSION);
+  } else if (!localStorage.getItem(STORAGE_KEYS.PRODUCTS)) {
     setStored(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
   } else {
     const stored = getStored<Product[]>(STORAGE_KEYS.PRODUCTS, []);

@@ -97,7 +97,7 @@ const CATEGORY_SHOWCASE: CategoryShowcaseMeta[] = [
     roastTag: 'Handcrafted in Coorg • 9 Varieties',
     countBadge: '9 Varieties',
     startingPrice: 350,
-    image: '/products/chocolates/milk-cashew-card.jpeg',
+    image: '/products/chocolates/milk-cashew.jpg?v=20261114v2',
     description:
       'Artisanal handcrafted luxury chocolates from the hills of Coorg. Creamy milk cashews, vanilla layers, mango white chocolate, bold dark cashews, crispy balls, and sugar-free treats.',
     highlights: [

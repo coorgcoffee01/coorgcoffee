@@ -160,19 +160,21 @@ function ProductDetailPage() {
               </div>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-2">
-              {product.images.map((imgUrl, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(imgUrl)}
-                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
-                    selectedImage === imgUrl ? 'border-[#C89B3C] scale-95 shadow-md' : 'border-border opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <img src={imgUrl} alt={`${product.name} thumbnail ${idx}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
+            {product.images.length > 1 && (
+              <div className="flex gap-3 overflow-x-auto pb-2">
+                {product.images.map((imgUrl, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(imgUrl)}
+                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
+                      selectedImage === imgUrl ? 'border-[#C89B3C] scale-95 shadow-md' : 'border-border opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img src={imgUrl} alt={`${product.name} thumbnail ${idx}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="lg:col-span-6 space-y-6">
