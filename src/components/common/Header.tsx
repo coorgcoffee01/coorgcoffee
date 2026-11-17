@@ -107,6 +107,18 @@ export const Header: React.FC<HeaderProps> = ({ onOpenSearch }) => {
               <span className="text-xs">🍫</span>
             </Link>
             <Link
+              to="/shop"
+              search={{ category: 'cat-wines' }}
+              className={`transition-colors hover:text-[#C89B3C] flex items-center gap-1.5 ${
+                isCurrentPath('/shop') && (location.search as any)?.category === 'cat-wines'
+                  ? 'text-[#C89B3C] font-bold border-b-2 border-[#C89B3C] pb-1'
+                  : 'text-foreground'
+              }`}
+            >
+              <span>Wines</span>
+              <span className="text-xs">🍷</span>
+            </Link>
+            <Link
               to="/about"
               className={`transition-colors hover:text-[#C89B3C] ${
                 isCurrentPath('/about') ? 'text-[#C89B3C] font-bold border-b-2 border-[#C89B3C] pb-1' : 'text-foreground'

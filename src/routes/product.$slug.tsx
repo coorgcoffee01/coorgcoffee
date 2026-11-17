@@ -188,7 +188,11 @@ function ProductDetailPage() {
 
               <div className="flex items-center space-x-3 pt-2 text-sm">
                 <span className="text-xs font-bold text-[#C89B3C] uppercase tracking-wider px-3 py-1 rounded-full bg-[#C89B3C]/10 border border-[#C89B3C]/20">
-                  {product.categoryId === 'cat-chocolates' ? 'Artisanal Coorg Chocolate' : `${product.roastLevel} Roast`}
+                  {product.categoryId === 'cat-chocolates'
+                    ? 'Artisanal Coorg Chocolate'
+                    : product.categoryId === 'cat-wines'
+                      ? 'Coorg Homemade Wine'
+                      : `${product.roastLevel} Roast`}
                 </span>
                 <span className="text-muted-foreground text-xs">•</span>
                 <span className="text-xs text-[#E8D9C5]/80 font-medium">100% Estate Harvest</span>
@@ -260,7 +264,11 @@ function ProductDetailPage() {
             {/* Variant / Bag Size Selection */}
             <div className="space-y-3">
               <label className="text-xs font-bold uppercase tracking-wider text-foreground block">
-                {product.categoryId === 'cat-chocolates' ? 'Select Pack Size / Quantity' : 'Select Bag Size / Quantity'}
+                {product.categoryId === 'cat-chocolates'
+                  ? 'Select Pack Size / Quantity'
+                  : product.categoryId === 'cat-wines'
+                    ? 'Select Bottle Type / Packaging'
+                    : 'Select Bag Size / Quantity'}
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {product.variants.map((v) => {
@@ -444,14 +452,24 @@ function ProductDetailPage() {
               </div>
               <div className="flex items-center space-x-2 text-foreground font-semibold">
                 <ShieldCheck className="w-4 h-4 text-[#C89B3C]" />
-                <span>{product.categoryId === 'cat-chocolates' ? 'Freshness-Sealed Artisanal Tubs' : 'Packed in Freshness-Preserving Valve Pouches'}</span>
+                <span>
+                  {product.categoryId === 'cat-chocolates'
+                    ? 'Freshness-Sealed Artisanal Tubs'
+                    : product.categoryId === 'cat-wines'
+                      ? '750ml Sealed Bottles • Express Dispatch'
+                      : 'Packed in Freshness-Preserving Valve Pouches'}
+                </span>
               </div>
             </div>
 
             <div className="space-y-6 pt-4 border-t border-border">
               <div className="space-y-2">
                 <h3 className="font-display text-xl text-foreground uppercase tracking-wide">
-                  {product.categoryId === 'cat-chocolates' ? 'ABOUT THIS CHOCOLATE' : 'ABOUT THIS COFFEE'}
+                  {product.categoryId === 'cat-chocolates'
+                    ? 'ABOUT THIS CHOCOLATE'
+                    : product.categoryId === 'cat-wines'
+                      ? 'ABOUT THIS WINE'
+                      : 'ABOUT THIS COFFEE'}
                 </h3>
                 <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
                   {product.description}
@@ -477,7 +495,9 @@ function ProductDetailPage() {
               {product.bestFor && product.bestFor.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="font-display text-sm text-foreground uppercase tracking-wider">
-                    {product.categoryId === 'cat-chocolates' ? 'BEST ENJOYED FOR:' : 'BEST FOR BREWING:'}
+                    {product.categoryId === 'cat-chocolates' || product.categoryId === 'cat-wines'
+                      ? 'BEST ENJOYED FOR:'
+                      : 'BEST FOR BREWING:'}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {product.bestFor.map((bf, idx) => (

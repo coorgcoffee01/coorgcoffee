@@ -17,6 +17,14 @@ export const INITIAL_CATEGORIES: Category[] = [
     badgeColor: 'amber',
   },
   {
+    id: 'cat-wines',
+    name: 'Coorg Homemade Fruit Wines',
+    slug: 'wines',
+    description: 'Authentic Kodagu homemade fruit wines: Kiwi, Bird Eye Chilli, Pepper, Star Apple, Red Wine, Mulberry & Strawberry (7 Flavours)',
+    sortOrder: 3,
+    badgeColor: 'amber',
+  },
+  {
     id: 'cat-beans',
     name: 'AA Grade Beans (Medium & Dark Roast)',
     slug: 'beans',
@@ -1236,6 +1244,518 @@ Net Weight: 250g (Price per 100g: ₹178/-).`,
         stock: 45,
         active: true,
         weightGrams: 250,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // ==================== COORG HOMEMADE FRUIT WINES ====================
+  // 20. Coorg Homemade Kiwi Wine
+  {
+    id: 'prod-kiwi-wine',
+    name: 'Coorg Homemade Kiwi Wine',
+    slug: 'coorg-homemade-kiwi-wine',
+    aliases: ['kiwi-wine', 'coorg-kiwi-wine'],
+    tagline: 'Refreshing & Tangy Estate Kiwi Infusion 🥝🍷',
+    shortDescription:
+      'Crisp, aromatic Coorg homemade kiwi wine naturally fermented from fresh estate kiwi pulp, boiled water, and sprouted grains.',
+    description: `Coorg Homemade Kiwi Wine is an authentic Kodagu estate specialty handcrafted in small artisanal batches following traditional Coorg home-brewing methods.
+
+Made from fresh sun-ripened kiwi fruits, pure boiled water, sugar, and sprouted grains, this wine is 100% naturally fermented without added yeast, synthetic colors, or chemical preservatives.
+
+It offers a crisp, lively acidity and bright tropical sweetness, making it a delightfully refreshing beverage for celebratory toasts, gatherings, and festive gifting.
+
+• Net Volume: 750ml
+• Packaging Options: Food-grade plastic bottle (₹499) or elegant keepsake glass bottle (₹599)
+• Delivery: ₹70 Pan-India express delivery directly from the hills of Coorg
+• FSSAI License: 21219108000175`,
+    whyYoullLoveIt: [
+      '100% natural estate fermentation with zero added alcohol',
+      'Made with fresh kiwi fruit, boiled water, sugar & sprouted grains',
+      'No added yeast or synthetic preservatives',
+      'Choice of 750ml food-grade plastic or premium glass bottle',
+      'Pan-India delivery straight from the hills of Kodagu',
+    ],
+    bestFor: [
+      'Celebratory toasts & gatherings',
+      'Light evening aperitifs',
+      'Festive & family gifting from Coorg',
+    ],
+    badges: ['100% Natural', 'Coorg Homemade', '750ml'],
+    roastLevel: 'Artisanal Wine',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-wines',
+    categoryName: 'Coorg Homemade Fruit Wines',
+    images: ['/products/wines/kiwi-wine.jpg?v=20261117'],
+    ratingAvg: 4.96,
+    ratingCount: 142,
+    featured: true,
+    accentColor: 'green',
+    active: true,
+    createdAt: '2026-11-17T00:00:00Z',
+    updatedAt: '2026-11-17T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-kiwi-wine-plastic-750',
+        productId: 'prod-kiwi-wine',
+        label: '750ml Plastic Bottle',
+        sku: 'CC-WINE-KIWI-PLAS-750',
+        price: 499,
+        salePrice: null,
+        stock: 50,
+        active: true,
+        weightGrams: 750,
+        deliveryFee: 70,
+      },
+      {
+        variantId: 'var-kiwi-wine-glass-750',
+        productId: 'prod-kiwi-wine',
+        label: '750ml Glass Bottle',
+        sku: 'CC-WINE-KIWI-GLAS-750',
+        price: 599,
+        salePrice: null,
+        stock: 40,
+        active: true,
+        weightGrams: 1200,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 21. Coorg Homemade Bird Eye Chilli Wine
+  {
+    id: 'prod-bird-eye-chilli-wine',
+    name: 'Coorg Homemade Bird Eye Chilli Wine',
+    slug: 'coorg-homemade-bird-eye-chilli-wine',
+    aliases: ['bird-eye-chilli-wine', 'chilli-wine'],
+    tagline: 'Fiery Zing Meets Sweet Estate Fermentation 🌶️🍷',
+    shortDescription:
+      'Coorg’s iconic Bird’s Eye Chilli (Parangi Malu) wine. Smooth, naturally sweet with a warm, exhilarating spice kick on the finish.',
+    description: `A true Coorg legend and conversation starter! Our Bird Eye Chilli Wine is handcrafted using indigenous Kodagu bird's eye chillies (known locally as Parangi Malu), revered for their intense aromatics and fiery character.
+
+Naturally fermented with pure boiled water, sugar, and sprouted grains, the upfront palate is surprisingly gentle and sweet, followed by a warm, exhilarating warmth that lingers pleasantly.
+
+Sip slowly to appreciate this unique fusion of sweet fruit wine craftsmanship and authentic Western Ghats spice heritage.
+
+• Net Volume: 750ml
+• Packaging Options: Food-grade plastic bottle (₹499) or premium glass bottle (₹599)
+• Delivery: ₹70 Pan-India express delivery directly from the hills of Coorg
+• FSSAI License: 21219108000175`,
+    whyYoullLoveIt: [
+      'Crafted with native Kodagu bird\'s eye chillies (Parangi Malu)',
+      'Sweet initial sip with an invigorating warm spice finish',
+      '100% natural estate fermentation without added yeast',
+      'Choice of 750ml food-grade plastic or premium glass bottle',
+      'A one-of-a-kind signature gourmet gift from Coorg',
+    ],
+    bestFor: [
+      'A unique conversation starter for dinner parties',
+      'Warm winter evening sipping',
+      'Gourmet food pairing with Coorg delicacies',
+    ],
+    badges: ['Signature Spicy', '100% Natural', '750ml'],
+    roastLevel: 'Artisanal Wine',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-wines',
+    categoryName: 'Coorg Homemade Fruit Wines',
+    images: ['/products/wines/bird-eye-chilli-wine.jpg?v=20261117'],
+    ratingAvg: 4.94,
+    ratingCount: 165,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-17T00:00:00Z',
+    updatedAt: '2026-11-17T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-chilli-wine-plastic-750',
+        productId: 'prod-bird-eye-chilli-wine',
+        label: '750ml Plastic Bottle',
+        sku: 'CC-WINE-CHLI-PLAS-750',
+        price: 499,
+        salePrice: null,
+        stock: 45,
+        active: true,
+        weightGrams: 750,
+        deliveryFee: 70,
+      },
+      {
+        variantId: 'var-chilli-wine-glass-750',
+        productId: 'prod-bird-eye-chilli-wine',
+        label: '750ml Glass Bottle',
+        sku: 'CC-WINE-CHLI-GLAS-750',
+        price: 599,
+        salePrice: null,
+        stock: 35,
+        active: true,
+        weightGrams: 1200,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 22. Coorg Homemade Pepper Wine
+  {
+    id: 'prod-pepper-wine',
+    name: 'Coorg Homemade Pepper Wine',
+    slug: 'coorg-homemade-pepper-wine',
+    aliases: ['pepper-wine', 'black-pepper-wine'],
+    tagline: 'Aromatic Coorg Black Pepper with Warm Spice Notes 🌿🍷',
+    shortDescription:
+      'Handcrafted from estate black pepper berries. A soothing, aromatic wine with gentle natural sweetness and comforting peppery warmth.',
+    description: `Coorg is universally celebrated as the spice bowl of India, and our Pepper Wine pays homage to the legendary black gold of Kodagu.
+
+Hand-harvested green and black pepper vines from shade-grown coffee plantations are steeped and naturally fermented with boiled water, sugar, and sprouted grains.
+
+The result is an aromatic, amber-hued wine that delivers a soothing sweetness balanced by the comforting, therapeutic warmth of pure Malabar pepper.
+
+• Net Volume: 750ml
+• Packaging Options: Food-grade plastic bottle (₹499) or premium glass bottle (₹599)
+• Delivery: ₹70 Pan-India express delivery directly from the hills of Coorg
+• FSSAI License: 21219108000175`,
+    whyYoullLoveIt: [
+      'Infused with fresh plantation-grown Coorg black pepper',
+      'Soothing, comforting warmth with natural sweet balance',
+      '100% natural estate fermentation with zero added alcohol',
+      'Choice of 750ml food-grade plastic or premium glass bottle',
+      'Handmade in small seasonal batches in Madikeri',
+    ],
+    bestFor: [
+      'Cool rainy evenings and winter sipping',
+      'Digestif after rich traditional meals',
+      'Gifting for spice lovers and connoisseurs',
+    ],
+    badges: ['Estate Spice', '100% Natural', '750ml'],
+    roastLevel: 'Artisanal Wine',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-wines',
+    categoryName: 'Coorg Homemade Fruit Wines',
+    images: ['/products/wines/pepper-wine.jpg?v=20261117'],
+    ratingAvg: 4.92,
+    ratingCount: 119,
+    featured: true,
+    accentColor: 'brown',
+    active: true,
+    createdAt: '2026-11-17T00:00:00Z',
+    updatedAt: '2026-11-17T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-pepper-wine-plastic-750',
+        productId: 'prod-pepper-wine',
+        label: '750ml Plastic Bottle',
+        sku: 'CC-WINE-PEPR-PLAS-750',
+        price: 499,
+        salePrice: null,
+        stock: 50,
+        active: true,
+        weightGrams: 750,
+        deliveryFee: 70,
+      },
+      {
+        variantId: 'var-pepper-wine-glass-750',
+        productId: 'prod-pepper-wine',
+        label: '750ml Glass Bottle',
+        sku: 'CC-WINE-PEPR-GLAS-750',
+        price: 599,
+        salePrice: null,
+        stock: 40,
+        active: true,
+        weightGrams: 1200,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 23. Coorg Homemade Star Apple Wine
+  {
+    id: 'prod-star-apple-wine',
+    name: 'Coorg Homemade Star Apple Wine',
+    slug: 'coorg-homemade-star-apple-wine',
+    aliases: ['star-apple-wine', 'star-fruit-wine'],
+    tagline: 'Luscious Tropical Star Apple with Gentle Floral Sweetness ⭐🍷',
+    shortDescription:
+      'Exotic tropical star apple nectar naturally fermented to perfection. Light golden, fragrant, and softly sweet with a delicate floral bouquet.',
+    description: `Harvested from sweet tropical star apple (Carambola) trees flourishing in the microclimate of Coorg river valleys.
+
+Our Star Apple Wine captures the delicate floral fragrance and mild tropical tang of golden star fruits. Naturally fermented with pure estate water and sprouted grains, it pours a glowing light-golden hue with an airy, refreshing sweetness.
+
+Exceptionally light and easy to enjoy, it is an exquisite afternoon wine that delights both newcomers and seasoned fruit wine lovers.
+
+• Net Volume: 750ml
+• Packaging Options: Food-grade plastic bottle (₹499) or premium glass bottle (₹599)
+• Delivery: ₹70 Pan-India express delivery directly from the hills of Coorg
+• FSSAI License: 21219108000175`,
+    whyYoullLoveIt: [
+      'Pure tropical star apple fruit pulp infusion',
+      'Delicate floral sweetness with light golden clarity',
+      '100% natural estate fermentation without added yeast',
+      'Choice of 750ml food-grade plastic or premium glass bottle',
+      'Zero chemical additives or synthetic flavors',
+    ],
+    bestFor: [
+      'Relaxed afternoon and sunset sipping',
+      'Pairing with fresh cheeses and light desserts',
+      'Festive celebrations and family hampers',
+    ],
+    badges: ['Floral & Mild', '100% Natural', '750ml'],
+    roastLevel: 'Artisanal Wine',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-wines',
+    categoryName: 'Coorg Homemade Fruit Wines',
+    images: ['/products/wines/star-apple-wine.jpg?v=20261117'],
+    ratingAvg: 4.95,
+    ratingCount: 104,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-17T00:00:00Z',
+    updatedAt: '2026-11-17T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-star-apple-wine-plastic-750',
+        productId: 'prod-star-apple-wine',
+        label: '750ml Plastic Bottle',
+        sku: 'CC-WINE-STAR-PLAS-750',
+        price: 499,
+        salePrice: null,
+        stock: 45,
+        active: true,
+        weightGrams: 750,
+        deliveryFee: 70,
+      },
+      {
+        variantId: 'var-star-apple-wine-glass-750',
+        productId: 'prod-star-apple-wine',
+        label: '750ml Glass Bottle',
+        sku: 'CC-WINE-STAR-GLAS-750',
+        price: 599,
+        salePrice: null,
+        stock: 35,
+        active: true,
+        weightGrams: 1200,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 24. Coorg Homemade Red Wine
+  {
+    id: 'prod-red-wine',
+    name: 'Coorg Homemade Red Wine',
+    slug: 'coorg-homemade-red-wine',
+    aliases: ['red-wine', 'coorg-red-wine'],
+    tagline: 'Classic Coorg Heritage Red Wine with Deep Berry Notes 🍇🍷',
+    shortDescription:
+      'The timeless Kodagu classic. Rich ruby-red wine naturally fermented from select grapes and estate fruit pulp. Smooth, velvety, and sweet.',
+    description: `No trip to Kodagu is complete without experiencing authentic Coorg Homemade Red Wine. Handcrafted following treasured family recipes passed down across generations.
+
+Select dark grapes and estate fruit pulp are slowly fermented with boiled water, sugar, and sprouted paddy grains. The result is a full-bodied, deep ruby-red wine bursting with sweet berry richness and a velvety smooth texture.
+
+Generous in flavor and deeply satisfying, it is the quintessential home-brewed wine of the Coorg hills.
+
+• Net Volume: 750ml
+• Packaging Options: Food-grade plastic bottle (₹499) or premium glass bottle (₹599)
+• Delivery: ₹70 Pan-India express delivery directly from the hills of Coorg
+• FSSAI License: 21219108000175`,
+    whyYoullLoveIt: [
+      'Generational Coorg heritage red wine recipe',
+      'Deep ruby-red color with rich natural grape sweetness',
+      '100% naturally fermented without added synthetic alcohol',
+      'Choice of 750ml food-grade plastic or premium glass bottle',
+      'Direct estate dispatch from Madikeri',
+    ],
+    bestFor: [
+      'Traditional family dinners and festive toasts',
+      'Evening relaxation and weekend unwinding',
+      'The classic Coorg estate souvenir gift',
+    ],
+    badges: ['Heritage Recipe', '100% Natural', '750ml'],
+    roastLevel: 'Artisanal Wine',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-wines',
+    categoryName: 'Coorg Homemade Fruit Wines',
+    images: ['/products/wines/red-wine.jpg?v=20261117'],
+    ratingAvg: 4.98,
+    ratingCount: 228,
+    featured: true,
+    accentColor: 'brown',
+    active: true,
+    createdAt: '2026-11-17T00:00:00Z',
+    updatedAt: '2026-11-17T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-red-wine-plastic-750',
+        productId: 'prod-red-wine',
+        label: '750ml Plastic Bottle',
+        sku: 'CC-WINE-RED-PLAS-750',
+        price: 499,
+        salePrice: null,
+        stock: 60,
+        active: true,
+        weightGrams: 750,
+        deliveryFee: 70,
+      },
+      {
+        variantId: 'var-red-wine-glass-750',
+        productId: 'prod-red-wine',
+        label: '750ml Glass Bottle',
+        sku: 'CC-WINE-RED-GLAS-750',
+        price: 599,
+        salePrice: null,
+        stock: 50,
+        active: true,
+        weightGrams: 1200,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 25. Coorg Homemade Mulberry Wine
+  {
+    id: 'prod-mulberry-wine',
+    name: 'Coorg Homemade Mulberry Wine',
+    slug: 'coorg-homemade-mulberry-wine',
+    aliases: ['mulberry-wine', 'coorg-mulberry-wine'],
+    tagline: 'Rich Velvet Mulberry with Deep Wild Berry Aromas 🫐🍷',
+    shortDescription:
+      'Exquisite royal purple wine handcrafted from ripe Coorg mulberries. Velvety, antioxidant-rich, with balanced sweet and tart notes.',
+    description: `Hand-gathered from wild mulberry groves that dot the shaded edges of Coorg coffee estates.
+
+Our Mulberry Wine features a dramatic royal purple-black tint and a velvety mouthfeel. The natural berry tartness of wild mulberries marries gracefully with slow estate fermentation, resulting in an intense, aromatic fruit wine that coats the palate with notes of ripe dark berries and subtle honey.
+
+Rich in natural fruit antioxidants and delightfully smooth from the first sip to the last.
+
+• Net Volume: 750ml
+• Packaging Options: Food-grade plastic bottle (₹499) or premium glass bottle (₹599)
+• Delivery: ₹70 Pan-India express delivery directly from the hills of Coorg
+• FSSAI License: 21219108000175`,
+    whyYoullLoveIt: [
+      'Crafted with wild hand-gathered Coorg mulberries',
+      'Dramatic natural royal purple hue with silky mouthfeel',
+      'Naturally fermented with zero added yeast or preservatives',
+      'Choice of 750ml food-grade plastic or premium glass bottle',
+      'Antioxidant-rich artisanal craft beverage',
+    ],
+    bestFor: [
+      'Dark fruit and berry lovers',
+      'Dinner party dessert pairings',
+      'Luxury festive hampers and celebrations',
+    ],
+    badges: ['Wild Mulberry', '100% Natural', '750ml'],
+    roastLevel: 'Artisanal Wine',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-wines',
+    categoryName: 'Coorg Homemade Fruit Wines',
+    images: ['/products/wines/mulberry-wine.jpg?v=20261117'],
+    ratingAvg: 4.97,
+    ratingCount: 156,
+    featured: true,
+    accentColor: 'brown',
+    active: true,
+    createdAt: '2026-11-17T00:00:00Z',
+    updatedAt: '2026-11-17T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-mulberry-wine-plastic-750',
+        productId: 'prod-mulberry-wine',
+        label: '750ml Plastic Bottle',
+        sku: 'CC-WINE-MULB-PLAS-750',
+        price: 499,
+        salePrice: null,
+        stock: 50,
+        active: true,
+        weightGrams: 750,
+        deliveryFee: 70,
+      },
+      {
+        variantId: 'var-mulberry-wine-glass-750',
+        productId: 'prod-mulberry-wine',
+        label: '750ml Glass Bottle',
+        sku: 'CC-WINE-MULB-GLAS-750',
+        price: 599,
+        salePrice: null,
+        stock: 40,
+        active: true,
+        weightGrams: 1200,
+        deliveryFee: 70,
+      },
+    ],
+  },
+
+  // 26. Coorg Homemade Strawberry Wine
+  {
+    id: 'prod-strawberry-wine',
+    name: 'Coorg Homemade Strawberry Wine',
+    slug: 'coorg-homemade-strawberry-wine',
+    aliases: ['strawberry-wine', 'coorg-strawberry-wine'],
+    tagline: 'Blush Pink Sweetness Bursting with Ripe Strawberry Notes 🍓🍷',
+    shortDescription:
+      'Delicate blush-toned wine naturally fermented from fresh hill strawberries. Sweet, intensely aromatic, and wonderfully charming.',
+    description: `Sweet, romantic, and beautifully fragrant. Our Strawberry Wine is handcrafted using fresh, plump strawberries harvested from high-elevation hill farms.
+
+Fermented slowly with boiled spring water, sugar, and sprouted grains, it develops a captivating blush-rose hue and a bouquet filled with fresh strawberry garden notes.
+
+Smooth and naturally sweet on the tongue, it is an irresistible fruit wine that pairs effortlessly with celebratory toasts and dessert platters.
+
+• Net Volume: 750ml
+• Packaging Options: Food-grade plastic bottle (₹499) or premium glass bottle (₹599)
+• Delivery: ₹70 Pan-India express delivery directly from the hills of Coorg
+• FSSAI License: 21219108000175`,
+    whyYoullLoveIt: [
+      'Fresh hill strawberry fruit pulp infusion',
+      'Charming natural blush-rose color and aroma',
+      '100% natural fermentation with no added yeast',
+      'Choice of 750ml food-grade plastic or premium glass bottle',
+      'Sweet, approachable, and beloved by all',
+    ],
+    bestFor: [
+      'Romantic evenings and anniversary toasts',
+      'Pairing with artisanal chocolates and desserts',
+      'Celebratory gifting and festive occasions',
+    ],
+    badges: ['Blush Rosé', '100% Natural', '750ml'],
+    roastLevel: 'Artisanal Wine',
+    roastOptions: [],
+    grindOptions: [],
+    categoryId: 'cat-wines',
+    categoryName: 'Coorg Homemade Fruit Wines',
+    images: ['/products/wines/strawberry-wine.jpg?v=20261117'],
+    ratingAvg: 4.96,
+    ratingCount: 172,
+    featured: true,
+    accentColor: 'amber',
+    active: true,
+    createdAt: '2026-11-17T00:00:00Z',
+    updatedAt: '2026-11-17T00:00:00Z',
+    variants: [
+      {
+        variantId: 'var-strawberry-wine-plastic-750',
+        productId: 'prod-strawberry-wine',
+        label: '750ml Plastic Bottle',
+        sku: 'CC-WINE-STRW-PLAS-750',
+        price: 499,
+        salePrice: null,
+        stock: 55,
+        active: true,
+        weightGrams: 750,
+        deliveryFee: 70,
+      },
+      {
+        variantId: 'var-strawberry-wine-glass-750',
+        productId: 'prod-strawberry-wine',
+        label: '750ml Glass Bottle',
+        sku: 'CC-WINE-STRW-GLAS-750',
+        price: 599,
+        salePrice: null,
+        stock: 40,
+        active: true,
+        weightGrams: 1200,
         deliveryFee: 70,
       },
     ],

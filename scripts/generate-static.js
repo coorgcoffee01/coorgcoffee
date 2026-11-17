@@ -100,6 +100,13 @@ async function generateStatic() {
     '/product/premium-mixed-assorted-chocolates',
     '/product/premium-blackcurrant-chocolate',
     '/product/white-chocolate-crispy-balls',
+    '/product/coorg-homemade-kiwi-wine',
+    '/product/coorg-homemade-bird-eye-chilli-wine',
+    '/product/coorg-homemade-pepper-wine',
+    '/product/coorg-homemade-star-apple-wine',
+    '/product/coorg-homemade-red-wine',
+    '/product/coorg-homemade-mulberry-wine',
+    '/product/coorg-homemade-strawberry-wine',
   ];
 
   const storeCount = await renderRoutes(ssr, storeRoutes, storePublicDir, 'Storefront');

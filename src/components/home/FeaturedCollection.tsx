@@ -112,6 +112,28 @@ const CATEGORY_SHOWCASE: CategoryShowcaseMeta[] = [
       tag: 'border-[#C89B3C]/30 text-[#C89B3C]',
     },
   },
+  {
+    id: 'cat-wines',
+    name: 'Coorg Homemade Fruit Wines',
+    shortName: 'Homemade Wines (7)',
+    roastTag: 'Handcrafted in Kodagu • 7 Flavours',
+    countBadge: '7 Flavours',
+    startingPrice: 499,
+    image: '/products/wines/red-wine.jpg?v=20261117',
+    description:
+      'Authentic Coorg homemade fruit wines naturally fermented from fresh estate fruits, herbs, and sprouted grains. Preservative-free in 750ml glass and plastic bottles.',
+    highlights: [
+      '100% natural fruit fermentation with zero added alcohol',
+      'Kiwi, Bird Eye Chilli, Pepper, Star Apple, Mulberry & more',
+      'Available in 750ml plastic (₹499) and glass (₹599) bottles',
+    ],
+    deliveryPerk: '750ml Sealed Bottles • ₹70 Express Delivery',
+    accentClass: {
+      badge: 'bg-rose-600/10 text-rose-600 dark:text-rose-400 border-rose-600/30',
+      button: 'bg-[#C89B3C] text-black hover:bg-[#b08732]',
+      tag: 'border-[#C89B3C]/30 text-[#C89B3C]',
+    },
+  },
 ];
 
 export const FeaturedCollection: React.FC = () => {
@@ -138,6 +160,7 @@ export const FeaturedCollection: React.FC = () => {
     'cat-powder': allProducts.filter((p) => p.categoryId === 'cat-powder'),
     'cat-filter': allProducts.filter((p) => p.categoryId === 'cat-filter'),
     'cat-chocolates': allProducts.filter((p) => p.categoryId === 'cat-chocolates'),
+    'cat-wines': allProducts.filter((p) => p.categoryId === 'cat-wines'),
   };
 
   return (
@@ -210,9 +233,9 @@ export const FeaturedCollection: React.FC = () => {
           })}
         </div>
 
-        {/* DEFAULT HOME VIEW: The 3 Original Showcase Category Cards (Preserving Home Page Layout) */}
+        {/* DEFAULT HOME VIEW: Showcase Category Cards */}
         {activeTab === 'all' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {CATEGORY_SHOWCASE.map((cat, idx) => {
               const catProducts = productsByCat[cat.id] || [];
 

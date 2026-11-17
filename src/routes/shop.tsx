@@ -25,6 +25,13 @@ const CATEGORY_META: Record<string, CategoryMeta> = {
     badge: '9 Varieties • Handcrafted Delights',
     tagline: 'Artisanal chocolates handcrafted in Coorg hills: Milk Cashew, Vanilla Layers, Mango White, Dark Cashew, Sugar-Free Dark, Crispy Balls & Purple Blackcurrant.',
   },
+  'cat-wines': {
+    id: 'cat-wines',
+    name: 'Coorg Homemade Fruit Wines',
+    sectionTitle: 'Coorg Homemade Fruit Wines',
+    badge: '7 Flavours • Generational Kodagu Recipes',
+    tagline: 'Authentic Kodagu homemade fruit wines naturally fermented from fresh estate fruits, herbs, and sprouted grains: Kiwi, Bird Eye Chilli, Pepper, Star Apple, Classic Red, Mulberry & Strawberry.',
+  },
   'cat-beans': {
     id: 'cat-beans',
     name: 'AA Grade Beans (Medium & Dark Roast)',
@@ -97,9 +104,11 @@ function ProductCard({ product }: { product: Product }) {
           <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#12100E]/85 text-white backdrop-blur-sm border border-white/10 w-fit">
             {product.categoryId === 'cat-chocolates'
               ? 'Artisanal Chocolate'
-              : product.roastOptions && product.roastOptions.length > 1
-                ? 'Medium & Dark Roast'
-                : `${product.roastLevel} Roast`}
+              : product.categoryId === 'cat-wines'
+                ? 'Coorg Homemade Wine'
+                : product.roastOptions && product.roastOptions.length > 1
+                  ? 'Medium & Dark Roast'
+                  : `${product.roastLevel} Roast`}
           </span>
           {someOutOfStock && (
             <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/90 text-black shadow-sm">
@@ -213,6 +222,7 @@ function ShopPage() {
     }
     if (!rawCat) return 'cat-all';
     if (rawCat === 'cat-chocolates' || rawCat === 'chocolates' || rawCat === 'chocolate') return 'cat-chocolates';
+    if (rawCat === 'cat-wines' || rawCat === 'wines' || rawCat === 'wine') return 'cat-wines';
     if (rawCat === 'cat-beans' || rawCat === 'beans') return 'cat-beans';
     if (rawCat === 'cat-powder' || rawCat === 'powder') return 'cat-powder';
     if (rawCat === 'cat-filter' || rawCat === 'filter' || rawCat === 'filter-coffee') return 'cat-filter';
@@ -305,10 +315,10 @@ function ShopPage() {
             <span>ESTATE HARVEST CATALOGUE</span>
           </div>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl uppercase tracking-tight text-foreground">
-            OUR ESTATE COFFEES &amp; ARTISANAL CHOCOLATES
+            OUR ESTATE COFFEES, CHOCOLATES &amp; WINES
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-            Discover shade-grown single-origin coffees and handcrafted luxury chocolates from the hills of Coorg. Freshly packed and shipped direct from the estate.
+            Discover shade-grown single-origin coffees, handcrafted luxury chocolates, and authentic homemade fruit wines from the hills of Coorg. Freshly packed and shipped direct from the estate.
           </p>
         </div>
 
