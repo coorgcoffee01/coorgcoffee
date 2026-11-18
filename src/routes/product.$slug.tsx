@@ -208,7 +208,11 @@ function ProductDetailPage() {
                     CURRENTLY SOLD OUT (ALL SIZES)
                   </h4>
                   <p className="text-xs text-red-300/90 mt-1 leading-relaxed">
-                    This estate roast is sold out across all pouch sizes. Our roaster in Coorg is currently roasting and packaging the next fresh batch.
+                    {product.categoryId === 'cat-chocolates'
+                      ? 'This artisanal chocolate is sold out across all tub sizes. Our confectionery in Coorg is currently handcrafting and packaging the next fresh batch.'
+                      : product.categoryId === 'cat-wines'
+                        ? 'This homemade fruit wine is sold out across all bottle types. Our cellars in Coorg are preparing the next batch.'
+                        : 'This estate roast is sold out across all pouch sizes. Our roaster in Coorg is currently roasting and packaging the next fresh batch.'}
                   </p>
                 </div>
               </div>
@@ -216,7 +220,7 @@ function ProductDetailPage() {
               <div className="p-3.5 rounded-xl bg-amber-950/30 border border-amber-500/40 text-amber-200 text-xs flex items-center space-x-2 shadow-sm">
                 <span className="text-base">⚠️</span>
                 <span>
-                  The selected <strong className="text-amber-400">{selectedVariant.label}</strong> size is out of stock. Please select an available pouch size below.
+                  The selected <strong className="text-amber-400">{selectedVariant.label}</strong> size is out of stock. Please select an available option below.
                 </span>
               </div>
             ) : null}
