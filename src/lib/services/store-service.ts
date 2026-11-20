@@ -197,7 +197,7 @@ export function initFirestoreSync() {
   }
 }
 
-const CATALOG_DATA_VERSION = '2026-11-20-v3';
+const CATALOG_DATA_VERSION = '2026-11-20-v4';
 
 export function initStoreData() {
   if (typeof window === 'undefined') return;

@@ -47,7 +47,7 @@ function AdminCustomersPage() {
     if (!customerMap.has(key)) {
       customerMap.set(key, {
         id: `cust-${customerMap.size + 1}`,
-        name: ord.shippingAddress.fullName || 'Guest Coffee Lover',
+        name: ord.shippingAddress.fullName || 'Guest Customer',
         email: ord.guestEmail || 'N/A',
         phone: ord.guestPhone || ord.shippingAddress.phone || 'N/A',
         address: ord.shippingAddress.line1,

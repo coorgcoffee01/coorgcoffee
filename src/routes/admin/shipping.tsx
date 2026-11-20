@@ -6,6 +6,12 @@ import { getOrders, saveOrder } from '../../lib/services/store-service';
 import { Order } from '../../lib/types';
 import { generateAWB, SHIPPING_MODE } from '../../lib/services/shipping';
 import { useAuth } from '../../context/AuthContext';
+import {
+  getOrderItemSpec,
+  getOrderDepartments,
+  getDepartmentLabel,
+  getDepartmentBadgeClasses,
+} from '../../lib/utils/product-kind';
 
 export const Route = createFileRoute('/admin/shipping')({
   component: AdminShippingPage,
@@ -72,18 +78,33 @@ function AdminShippingPage() {
             No orders available for shipping management.
           </div>
         ) : (
-          orders.map((ord) => (
+          orders.map((ord) => {
+            const { departments: ordDepts, hasGlassBottle } = getOrderDepartments(ord.items);
+            return (
             <div
               key={ord.id}
               className="p-6 rounded-2xl bg-[#1C1612] border border-[#3D3025] space-y-4 hover:border-[#C89B3C]/40 transition-colors"
             >
               <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3D3025] pb-4">
                 <div>
-                  <div className="flex items-center space-x-3">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="font-mono text-lg font-bold text-[#C89B3C]">#{ord.orderNumber}</span>
                     <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#C89B3C]/20 text-[#C89B3C]">
                       {ord.status}
                     </span>
+                    {ordDepts.map((dept) => (
+                      <span
+                        key={dept}
+                        className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider border ${getDepartmentBadgeClasses(dept)}`}
+                      >
+                        {getDepartmentLabel(dept)}
+                      </span>
+                    ))}
+                    {hasGlassBottle && (
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                        Fragile Glass Handling
+                      </span>
+                    )}
                   </div>
                   <p className="text-xs text-gray-400 mt-1">
                     Customer: <strong className="text-white">{ord.shippingAddress.fullName}</strong> ({ord.shippingAddress.city}, {ord.shippingAddress.state})
@@ -125,18 +146,21 @@ function AdminShippingPage() {
                 </div>
               </div>
 
-              {/* Package Contents & Grind Preferences */}
+              {/* Package Contents & Packing Specifications */}
               <div className="p-3.5 rounded-xl bg-[#1A1410] border border-[#3D3025] space-y-2 text-xs">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#C89B3C] block">
-                  📦 PACKAGE CONTENTS &amp; GRIND PREFERENCES ({ord.items?.length || 0})
-                </span>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="text-[10px] uppercase font-bold tracking-wider text-[#C89B3C] block">
+                    PACKAGE CONTENTS &amp; PACKING SPECIFICATIONS ({ord.items?.length || 0})
+                  </span>
+                  {hasGlassBottle && (
+                    <span className="text-[10px] font-bold text-rose-300 bg-rose-950/50 border border-rose-500/40 px-2 py-0.5 rounded-md">
+                      Contains Glass Wine Bottle — Use Bubble Wrap &amp; Fragile Label
+                    </span>
+                  )}
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {ord.items?.map((item, idx) => {
-                    const grindLabel =
-                      item.grindOption ||
-                      (item.productName.toLowerCase().includes('bean')
-                        ? 'Whole Beans'
-                        : 'South Indian Filter Grind');
+                    const spec = getOrderItemSpec(item);
                     return (
                       <div
                         key={idx}
@@ -144,13 +168,21 @@ function AdminShippingPage() {
                       >
                         <div className="min-w-0">
                           <p className="font-bold text-white truncate text-xs">{item.productName}</p>
-                          <p className="text-[10px] text-gray-400">Size: {item.variantLabel}</p>
-                          <span className="inline-block mt-1 px-2 py-0.5 rounded bg-[#C89B3C]/20 border border-[#C89B3C]/40 text-[#C89B3C] font-extrabold text-[10px] uppercase">
-                            ☕ Grind: {grindLabel}
+                          <p className="text-[10px] text-gray-400">Pack: {item.variantLabel}</p>
+                          <span
+                            className={`inline-block mt-1 px-2 py-0.5 rounded border font-extrabold text-[10px] uppercase ${
+                              spec.isFragileGlass
+                                ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                                : getDepartmentBadgeClasses(spec.department)
+                            }`}
+                          >
+                            {spec.department === 'coffee'
+                              ? spec.primaryTag
+                              : spec.secondaryTag || spec.primaryTag}
                           </span>
                         </div>
                         <span className="font-bold text-white shrink-0 text-xs font-mono bg-black/40 px-2 py-1 rounded">
-                          {item.quantity}×
+                          {item.quantity}× {spec.unitWord}
                         </span>
                       </div>
                     );
@@ -202,7 +234,8 @@ function AdminShippingPage() {
                 </div>
               </div>
             </div>
-          ))
+            );
+          })
         )}
       </div>
     </AdminLayout>

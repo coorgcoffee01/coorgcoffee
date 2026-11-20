@@ -432,7 +432,7 @@ function AdminSubscribersPage() {
                   <div className="font-bold flex items-center gap-1.5 text-[#C89B3C]">
                     <Sparkles className="w-4 h-4" /> 🚀 New Product Launch
                   </div>
-                  <div className="text-[10px] text-gray-400 mt-1">Announce fresh coffee roasts & SKUs</div>
+                  <div className="text-[10px] text-gray-400 mt-1">Announce fresh roasts, chocolates &amp; wines</div>
                 </button>
 
                 <button

@@ -5,24 +5,8 @@ export const INITIAL_CATEGORIES: Category[] = [
     id: 'cat-all',
     name: 'All Products',
     slug: 'all',
-    description: 'Freshly roasted single-origin & blended coffees from Coorg hills',
+    description: 'Estate-roasted Coorg coffees, artisanal chocolates, and homemade fruit wines',
     sortOrder: 1,
-  },
-  {
-    id: 'cat-chocolates',
-    name: 'Artisanal Coorg Chocolates',
-    slug: 'chocolates',
-    description: 'Handcrafted luxury chocolates: Milk Cashew, Dark Cashew, Mango White, Sugar-Free Dark, Crispy Balls & Purple Blackcurrant (9 Varieties)',
-    sortOrder: 2,
-    badgeColor: 'amber',
-  },
-  {
-    id: 'cat-wines',
-    name: 'Coorg Homemade Fruit Wines',
-    slug: 'wines',
-    description: 'Authentic Kodagu homemade fruit wines: Kiwi, Bird Eye Chilli, Pepper, Star Apple, Red Wine, Mulberry & Strawberry (7 Flavours)',
-    sortOrder: 3,
-    badgeColor: 'amber',
   },
   {
     id: 'cat-beans',
@@ -47,6 +31,22 @@ export const INITIAL_CATEGORIES: Category[] = [
     description: 'Traditional filter coffee (80:20) and specialty grinds including Espresso & Moka Pot (5 Varieties)',
     sortOrder: 4,
     badgeColor: 'brown',
+  },
+  {
+    id: 'cat-chocolates',
+    name: 'Artisanal Coorg Chocolates',
+    slug: 'chocolates',
+    description: 'Handcrafted luxury chocolates: Milk Cashew, Dark Cashew, Mango White, Sugar-Free Dark, Crispy Balls & Purple Blackcurrant (9 Varieties)',
+    sortOrder: 5,
+    badgeColor: 'amber',
+  },
+  {
+    id: 'cat-wines',
+    name: 'Coorg Homemade Fruit Wines',
+    slug: 'wines',
+    description: 'Authentic Kodagu homemade fruit wines: Kiwi, Bird Eye Chilli, Pepper, Star Apple, Red Wine, Mulberry & Strawberry (7 Flavours)',
+    sortOrder: 6,
+    badgeColor: 'amber',
   },
 ];
 

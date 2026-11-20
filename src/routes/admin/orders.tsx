@@ -25,6 +25,13 @@ import { getOrders, updateOrderStatus, saveOrder, updateOrderAWB } from '../../l
 import { Order } from '../../lib/types';
 import { useAuth } from '../../context/AuthContext';
 import { ConfirmDialog, ConfirmDialogProps } from '../../components/admin/ConfirmDialog';
+import {
+  ProductDepartment,
+  getDepartmentLabel,
+  getDepartmentBadgeClasses,
+  getOrderItemSpec,
+  getOrderDepartments,
+} from '../../lib/utils/product-kind';
 
 export const Route = createFileRoute('/admin/orders')({
   component: AdminOrdersPage,
@@ -34,6 +41,7 @@ function AdminOrdersPage() {
   const { admin } = useAuth();
   const [orders, setOrders] = useState<Order[]>(getOrders());
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [filterDept, setFilterDept] = useState<'all' | ProductDepartment>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [awbInputs, setAwbInputs] = useState<Record<string, string>>({});
@@ -123,14 +131,20 @@ function AdminOrdersPage() {
   const filtered = orders.filter((ord) => {
     const matchesStatus =
       filterStatus === 'all' || ord.status.toLowerCase() === filterStatus.toLowerCase();
+    const matchesDept =
+      filterDept === 'all' || getOrderDepartments(ord.items).departments.includes(filterDept);
+    const q = searchQuery.toLowerCase();
     const matchesQuery =
-      ord.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ord.shippingAddress.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      ord.guestEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ord.orderNumber.toLowerCase().includes(q) ||
+      ord.shippingAddress.fullName.toLowerCase().includes(q) ||
+      ord.guestEmail.toLowerCase().includes(q) ||
       ord.guestPhone.includes(searchQuery) ||
-      ord.shippingAddress.city.toLowerCase().includes(searchQuery.toLowerCase());
+      ord.shippingAddress.city.toLowerCase().includes(q) ||
+      (ord.items || []).some(
+        (it) => it.productName.toLowerCase().includes(q) || (it.sku || '').toLowerCase().includes(q)
+      );
 
-    return matchesStatus && matchesQuery;
+    return matchesStatus && matchesDept && matchesQuery;
   });
 
   const totalCollected = orders
@@ -184,15 +198,28 @@ function AdminOrdersPage() {
 
       {/* Top Filter & Search Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-[#1C1612] border border-[#3D3025]">
-        <div className="relative flex-1 min-w-[240px]">
-          <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search by Order #, Customer Name, Phone, City..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-[#241D17] border border-[#3D3025] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#C89B3C]"
-          />
+        <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[260px]">
+          <div className="relative flex-1 min-w-[200px]">
+            <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search Order #, Customer, Phone, City, Product or SKU..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-2 bg-[#241D17] border border-[#3D3025] rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-[#C89B3C]"
+            />
+          </div>
+          <select
+            value={filterDept}
+            onChange={(e) => setFilterDept(e.target.value as 'all' | ProductDepartment)}
+            className="px-3 py-2 bg-[#241D17] border border-[#3D3025] rounded-xl text-xs font-bold text-[#E8D9C5] focus:outline-none focus:border-[#C89B3C] cursor-pointer"
+            aria-label="Filter orders by product category"
+          >
+            <option value="all">All Categories</option>
+            <option value="coffee">Coffee</option>
+            <option value="chocolate">Chocolates</option>
+            <option value="wine">Homemade Wines</option>
+          </select>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
@@ -222,6 +249,7 @@ function AdminOrdersPage() {
           filtered.map((ord) => {
             const cleanPhone = ord.guestPhone.replace(/[^0-9]/g, '');
             const formattedPhone = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
+            const { departments: ordDepts, hasGlassBottle } = getOrderDepartments(ord.items);
             const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(
               `Hello ${ord.shippingAddress.fullName}, thank you for ordering from Coorg Coffee! We are processing your Order #${ord.orderNumber}.`
             )}`;
@@ -233,7 +261,7 @@ function AdminOrdersPage() {
               >
                 {/* Order Top Bar: Number, Status, Payment, Grand Total */}
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3D3025] pb-4">
-                  <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-2.5">
                     <span className="font-mono text-lg font-bold text-[#C89B3C]">
                       #{ord.orderNumber}
                     </span>
@@ -261,6 +289,21 @@ function AdminOrdersPage() {
                     >
                       PAYMENT: {ord.paymentStatus.toUpperCase()}
                     </span>
+
+                    {ordDepts.map((dept) => (
+                      <span
+                        key={dept}
+                        className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider border ${getDepartmentBadgeClasses(dept)}`}
+                      >
+                        {getDepartmentLabel(dept)}
+                      </span>
+                    ))}
+
+                    {hasGlassBottle && (
+                      <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                        Fragile Glass
+                      </span>
+                    )}
 
                     <span className="text-xs text-gray-400 flex items-center gap-1">
                       <Clock className="w-3 h-3 text-gray-500" />
@@ -382,7 +425,7 @@ function AdminOrdersPage() {
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-black uppercase tracking-widest text-[#C89B3C]">
-                          HOW MUCH &amp; ITEMS ORDERED ({ord.items.length} {ord.items.length === 1 ? 'Pack' : 'Packs'})
+                          HOW MUCH &amp; ITEMS ORDERED ({ord.items.length} {ord.items.length === 1 ? 'Item' : 'Items'})
                         </span>
                         <span className="text-xs text-[#B5A490]">
                           Subtotal: <strong className="text-white">₹{ord.subtotal}</strong>
@@ -392,11 +435,7 @@ function AdminOrdersPage() {
                       {/* Items List */}
                       <div className="space-y-2">
                         {ord.items.map((item, idx) => {
-                          const grindPreference =
-                            item.grindOption ||
-                            (item.productName.toLowerCase().includes('bean')
-                              ? 'Whole Beans'
-                              : 'South Indian Filter Grind');
+                          const spec = getOrderItemSpec(item);
 
                           return (
                             <div
@@ -411,8 +450,8 @@ function AdminOrdersPage() {
                                   <div className="min-w-0">
                                     <p className="font-bold text-white text-sm">{item.productName}</p>
                                     <p className="text-[11px] text-gray-400">
-                                      Size: <strong className="text-amber-200">{item.variantLabel}</strong>
-                                      {item.weightGrams ? ` (${item.weightGrams >= 1000 ? `${item.weightGrams / 1000}kg` : `${item.weightGrams}g`})` : ''} • SKU: <span className="font-mono text-gray-300">{item.sku}</span>
+                                      Pack: <strong className="text-amber-200">{item.variantLabel}</strong>
+                                      {item.weightGrams && spec.department !== 'wine' ? ` (${item.weightGrams >= 1000 ? `${item.weightGrams / 1000}kg` : `${item.weightGrams}g`})` : ''} • SKU: <span className="font-mono text-gray-300">{item.sku}</span>
                                     </p>
                                   </div>
                                 </div>
@@ -427,16 +466,39 @@ function AdminOrdersPage() {
                                 </div>
                               </div>
 
-                              {/* Prominent Grind Preference Pill */}
+                              {/* Category-Aware Specification Pill */}
                               <div className="flex flex-wrap items-center gap-1.5 pl-9">
-                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#C89B3C]/20 border border-[#C89B3C]/50 text-[#C89B3C] font-extrabold text-[11px] uppercase tracking-wide">
-                                  <Coffee className="w-3 h-3 text-[#C89B3C]" />
-                                  <span>GRIND: {grindPreference}</span>
-                                </span>
-                                {item.roastLevel && (
-                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-stone-800 border border-stone-700 text-stone-300 text-[10px] font-semibold">
-                                    <span>ROAST: {item.roastLevel}</span>
-                                  </span>
+                                {spec.department === 'coffee' ? (
+                                  <>
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-[#C89B3C]/20 border border-[#C89B3C]/50 text-[#C89B3C] font-extrabold text-[11px] uppercase tracking-wide">
+                                      <Coffee className="w-3 h-3 text-[#C89B3C]" />
+                                      <span>{spec.primaryTag}</span>
+                                    </span>
+                                    {item.roastLevel && (
+                                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-stone-800 border border-stone-700 text-stone-300 text-[10px] font-semibold">
+                                        <span>ROAST: {item.roastLevel}</span>
+                                      </span>
+                                    )}
+                                  </>
+                                ) : (
+                                  <>
+                                    <span
+                                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md border font-extrabold text-[11px] uppercase tracking-wide ${getDepartmentBadgeClasses(spec.department)}`}
+                                    >
+                                      <span>{spec.primaryTag}</span>
+                                    </span>
+                                    {spec.secondaryTag && (
+                                      <span
+                                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md border text-[10px] font-bold uppercase ${
+                                          spec.isFragileGlass
+                                            ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                                            : 'bg-stone-800 border-stone-700 text-stone-300'
+                                        }`}
+                                      >
+                                        <span>{spec.secondaryTag}</span>
+                                      </span>
+                                    )}
+                                  </>
                                 )}
                               </div>
                             </div>
@@ -549,12 +611,12 @@ function AdminOrdersPage() {
             </div>
 
             <div className="space-y-4 text-xs">
-              {/* Order Items & Grind Preferences */}
+              {/* Order Items & Packing Specifications */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <h4 className="font-bold text-[#C89B3C] uppercase tracking-wider flex items-center gap-1.5">
-                    <Coffee className="w-4 h-4 text-[#C89B3C]" />
-                    <span>ORDERED ITEMS &amp; GRIND PREFERENCES ({selectedOrder.items?.length || 0})</span>
+                    <Package className="w-4 h-4 text-[#C89B3C]" />
+                    <span>ORDERED ITEMS &amp; PACKING SPECIFICATIONS ({selectedOrder.items?.length || 0})</span>
                   </h4>
                   <span className="text-[11px] text-gray-400">
                     Items: <strong className="text-white">{selectedOrder.items?.reduce((acc, i) => acc + i.quantity, 0)} Units</strong>
@@ -563,11 +625,7 @@ function AdminOrdersPage() {
 
                 <div className="divide-y divide-[#2A211B] border border-[#3D3025] rounded-xl overflow-hidden bg-[#241D17]">
                   {selectedOrder.items?.map((item, idx) => {
-                    const grindLabel =
-                      item.grindOption ||
-                      (item.productName.toLowerCase().includes('bean')
-                        ? 'Whole Beans'
-                        : 'South Indian Filter Grind');
+                    const spec = getOrderItemSpec(item);
                     const roastLabel = item.roastLevel || 'Medium-Dark Roast';
 
                     return (
@@ -582,8 +640,8 @@ function AdminOrdersPage() {
                             <div className="min-w-0">
                               <p className="font-bold text-white text-sm">{item.productName}</p>
                               <p className="text-gray-400 text-xs mt-0.5">
-                                Pack Size: <strong className="text-amber-200">{item.variantLabel}</strong>
-                                {item.weightGrams ? ` (${item.weightGrams >= 1000 ? `${item.weightGrams / 1000}kg` : `${item.weightGrams}g`})` : ''} • SKU: <span className="font-mono text-gray-300">{item.sku}</span>
+                                Pack: <strong className="text-amber-200">{item.variantLabel}</strong>
+                                {item.weightGrams && spec.department !== 'wine' ? ` (${item.weightGrams >= 1000 ? `${item.weightGrams / 1000}kg` : `${item.weightGrams}g`})` : ''} • SKU: <span className="font-mono text-gray-300">{item.sku}</span>
                               </p>
                             </div>
                           </div>
@@ -598,19 +656,41 @@ function AdminOrdersPage() {
                           </div>
                         </div>
 
-                        {/* EXPLICIT GRIND & ROAST BADGES */}
+                        {/* CATEGORY-AWARE PACKING BADGES */}
                         <div className="flex flex-wrap items-center gap-2 pt-1 pl-15">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#C89B3C]/20 border border-[#C89B3C]/60 text-[#C89B3C] font-black text-xs uppercase tracking-wide shadow-sm">
-                            <Coffee className="w-3.5 h-3.5 text-[#C89B3C]" />
-                            <span>GRIND PREFERENCE: {grindLabel}</span>
-                          </span>
-
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-800 border border-stone-700 text-stone-200 font-bold text-xs uppercase">
-                            <span>ROAST: {roastLabel}</span>
-                          </span>
+                          {spec.department === 'coffee' ? (
+                            <>
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#C89B3C]/20 border border-[#C89B3C]/60 text-[#C89B3C] font-black text-xs uppercase tracking-wide shadow-sm">
+                                <Coffee className="w-3.5 h-3.5 text-[#C89B3C]" />
+                                <span>{spec.primaryTag}</span>
+                              </span>
+                              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-stone-800 border border-stone-700 text-stone-200 font-bold text-xs uppercase">
+                                <span>ROAST: {roastLabel}</span>
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <span
+                                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border font-black text-xs uppercase tracking-wide shadow-sm ${getDepartmentBadgeClasses(spec.department)}`}
+                              >
+                                <span>{spec.primaryTag}</span>
+                              </span>
+                              {spec.secondaryTag && (
+                                <span
+                                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border font-bold text-xs uppercase ${
+                                    spec.isFragileGlass
+                                      ? 'bg-rose-500/20 border-rose-500/50 text-rose-200'
+                                      : 'bg-stone-800 border-stone-700 text-stone-200'
+                                  }`}
+                                >
+                                  <span>{spec.secondaryTag}</span>
+                                </span>
+                              )}
+                            </>
+                          )}
 
                           <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-[#18130F] border border-[#3D3025] text-emerald-400 text-[11px] font-bold">
-                            <span>Qty: {item.quantity} Pouch{item.quantity > 1 ? 'es' : ''}</span>
+                            <span>Qty: {item.quantity} {spec.unitWord}</span>
                           </span>
                         </div>
                       </div>
@@ -789,8 +869,14 @@ function AdminOrdersPage() {
                   onClick={() => {
                     const itemsText = selectedOrder.items
                       .map((i) => {
-                        const grind = i.grindOption || (i.productName.toLowerCase().includes('bean') ? 'Whole Beans' : 'South Indian Filter Grind');
-                        return `${i.quantity}x ${i.productName} (${i.variantLabel}, Grind: ${grind})`;
+                        const spec = getOrderItemSpec(i);
+                        if (spec.department === 'coffee') {
+                          return `${i.quantity}x ${i.productName} (${i.variantLabel}, ${spec.primaryTag})`;
+                        }
+                        if (spec.isFragileGlass) {
+                          return `${i.quantity}x ${i.productName} (${i.variantLabel} - FRAGILE GLASS)`;
+                        }
+                        return `${i.quantity}x ${i.productName} (${i.variantLabel})`;
                       })
                       .join(', ');
                     const text = `COORG COFFEE ORDER #${selectedOrder.orderNumber}\nRecipient: ${selectedOrder.shippingAddress.fullName}\nPhone: ${selectedOrder.guestPhone || selectedOrder.shippingAddress.phone}\nAddress: ${selectedOrder.shippingAddress.line1}${selectedOrder.shippingAddress.line2 ? ', ' + selectedOrder.shippingAddress.line2 : ''}, ${selectedOrder.shippingAddress.city}, ${selectedOrder.shippingAddress.state} - ${selectedOrder.shippingAddress.pincode}\nItems: ${itemsText}\nTotal: ₹${selectedOrder.grandTotal}`;

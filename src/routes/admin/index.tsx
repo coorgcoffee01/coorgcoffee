@@ -39,6 +39,14 @@ import {
 } from '../../lib/services/store-service';
 import { Order, Product } from '../../lib/types';
 import { useAuth } from '../../context/AuthContext';
+import {
+  ProductDepartment,
+  getProductDepartment,
+  getDepartmentLabel,
+  getDepartmentBadgeClasses,
+  getOrderItemSpec,
+  getOrderDepartments,
+} from '../../lib/utils/product-kind';
 
 import { ConfirmDialog } from '../../components/admin/ConfirmDialog';
 
@@ -53,6 +61,8 @@ function AdminDashboardPage() {
   const [categories] = useState(getCategories());
   const [queries, setQueries] = useState(getCustomerQueries());
   const [orderFilter, setOrderFilter] = useState<'all' | 'pending' | 'shipped' | 'delivered'>('all');
+  const [orderDeptFilter, setOrderDeptFilter] = useState<'all' | ProductDepartment>('all');
+  const [inventoryDeptFilter, setInventoryDeptFilter] = useState<'all' | ProductDepartment>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [awbInputs, setAwbInputs] = useState<Record<string, string>>({});
   const [stockSuccessMsg, setStockSuccessMsg] = useState<string | null>(null);
@@ -241,17 +251,26 @@ function AdminDashboardPage() {
   };
 
   const filteredOrders = orders.filter((o) => {
-    if (orderFilter === 'pending') {
-      return o.status === 'Confirmed' || o.status === 'Order Placed' || o.status === 'Packed';
-    }
-    if (orderFilter === 'shipped') {
-      return o.status === 'Shipped' || o.status === 'In Transit';
-    }
-    if (orderFilter === 'delivered') {
-      return o.status === 'Delivered';
-    }
-    return true;
+    const matchesStatus =
+      orderFilter === 'pending'
+        ? o.status === 'Confirmed' || o.status === 'Order Placed' || o.status === 'Packed'
+        : orderFilter === 'shipped'
+        ? o.status === 'Shipped' || o.status === 'In Transit'
+        : orderFilter === 'delivered'
+        ? o.status === 'Delivered'
+        : true;
+    if (!matchesStatus) return false;
+    if (orderDeptFilter === 'all') return true;
+    return getOrderDepartments(o.items).departments.includes(orderDeptFilter);
   });
+
+  const coffeeCount = products.filter((p) => getProductDepartment(p) === 'coffee').length;
+  const chocoCount = products.filter((p) => getProductDepartment(p) === 'chocolate').length;
+  const wineCount = products.filter((p) => getProductDepartment(p) === 'wine').length;
+
+  const filteredInventoryProducts = products.filter((p) =>
+    inventoryDeptFilter === 'all' ? true : getProductDepartment(p) === inventoryDeptFilter
+  );
 
   return (
     <AdminLayout
@@ -334,7 +353,9 @@ function AdminDashboardPage() {
             {outOfStockVariants.length > 0 ? (
               <span className="text-red-400 font-bold">Items currently Out of Stock</span>
             ) : (
-              <span>All 10 estate roasts available in stock</span>
+              <span>
+                All {products.length} items in stock ({coffeeCount} Coffee • {chocoCount} Choco • {wineCount} Wine)
+              </span>
             )}
           </p>
         </div>
@@ -365,12 +386,23 @@ function AdminDashboardPage() {
               </h3>
             </div>
             <p className="text-xs text-[#B5A490] mt-1">
-              Clear breakdown of buyers, items, exact bag sizes, delivery address, and payment amounts.
+              Clear breakdown of buyers, items across Coffee, Chocolates &amp; Wines, pack options, delivery address, and payment amounts.
             </p>
           </div>
 
           {/* Quick Filter Tabs */}
           <div className="flex flex-wrap items-center gap-2">
+            <select
+              value={orderDeptFilter}
+              onChange={(e) => setOrderDeptFilter(e.target.value as 'all' | ProductDepartment)}
+              className="px-3 py-1.5 rounded-full text-xs font-bold bg-[#241D17] border border-[#3D3025] text-[#E8D9C5] focus:outline-none focus:border-[#C89B3C] cursor-pointer"
+              aria-label="Filter orders by product category"
+            >
+              <option value="all">All Categories</option>
+              <option value="coffee">Coffee Orders</option>
+              <option value="chocolate">Chocolate Orders</option>
+              <option value="wine">Wine Orders</option>
+            </select>
             <button
               onClick={() => setOrderFilter('all')}
               className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase transition-all cursor-pointer ${
@@ -424,6 +456,7 @@ function AdminDashboardPage() {
             {filteredOrders.map((ord) => {
               const cleanPhone = ord.guestPhone.replace(/[^0-9]/g, '');
               const formattedPhone = cleanPhone.startsWith('91') ? cleanPhone : `91${cleanPhone}`;
+              const { departments: ordDepts, hasGlassBottle } = getOrderDepartments(ord.items);
               const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(
                 `Hello ${ord.shippingAddress.fullName}, thank you for ordering from Coorg Coffee! We are preparing your Order #${ord.orderNumber} for dispatch.`
               )}`;
@@ -435,7 +468,7 @@ function AdminDashboardPage() {
                 >
                   {/* Card Header Bar */}
                   <div className="p-4 sm:p-5 bg-[#1F1813] border-b border-[#3D3025] flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2.5">
                       <span className="font-mono text-base sm:text-lg font-bold text-[#C89B3C]">
                         #{ord.orderNumber}
                       </span>
@@ -463,6 +496,21 @@ function AdminDashboardPage() {
                       >
                         Payment: {ord.paymentStatus.toUpperCase()}
                       </span>
+
+                      {ordDepts.map((dept) => (
+                        <span
+                          key={dept}
+                          className={`px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider border ${getDepartmentBadgeClasses(dept)}`}
+                        >
+                          {getDepartmentLabel(dept)}
+                        </span>
+                      ))}
+
+                      {hasGlassBottle && (
+                        <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                          Fragile Glass
+                        </span>
+                      )}
 
                       <span className="text-xs text-[#B5A490] flex items-center gap-1">
                         <Clock className="w-3 h-3 text-gray-500" />
@@ -565,7 +613,7 @@ function AdminDashboardPage() {
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <span className="text-[10px] uppercase tracking-widest text-[#C89B3C] font-black">
-                            HOW MUCH &amp; ITEMS ORDERED ({ord.items.length} {ord.items.length === 1 ? 'Pack' : 'Packs'})
+                            HOW MUCH &amp; ITEMS ORDERED ({ord.items.length} {ord.items.length === 1 ? 'Item' : 'Items'})
                           </span>
                           <span className="text-xs text-[#B5A490]">
                             Subtotal: <strong className="text-white">₹{ord.subtotal}</strong>
@@ -574,31 +622,42 @@ function AdminDashboardPage() {
 
                         {/* Items Table / List */}
                         <div className="space-y-2">
-                          {ord.items.map((item, idx) => (
-                            <div
-                              key={idx}
-                              className="p-2.5 rounded-xl bg-[#1C1612] border border-[#3D3025] flex items-center justify-between gap-3 text-xs"
-                            >
-                              <div className="flex items-center space-x-3 min-w-0">
-                                <span className="w-6 h-6 rounded-md bg-[#C89B3C]/10 text-[#C89B3C] font-black text-xs flex items-center justify-center shrink-0 border border-[#C89B3C]/30">
-                                  {item.quantity}×
-                                </span>
-                                <div className="min-w-0">
-                                  <p className="font-bold text-white truncate">{item.productName}</p>
-                                  <p className="text-[11px] text-[#C89B3C] font-semibold">
-                                    Size: {item.variantLabel} • SKU: {item.sku}
-                                  </p>
+                          {ord.items.map((item, idx) => {
+                            const spec = getOrderItemSpec(item);
+                            return (
+                              <div
+                                key={idx}
+                                className="p-2.5 rounded-xl bg-[#1C1612] border border-[#3D3025] flex items-center justify-between gap-3 text-xs"
+                              >
+                                <div className="flex items-center space-x-3 min-w-0">
+                                  <span className="w-6 h-6 rounded-md bg-[#C89B3C]/10 text-[#C89B3C] font-black text-xs flex items-center justify-center shrink-0 border border-[#C89B3C]/30">
+                                    {item.quantity}×
+                                  </span>
+                                  <div className="min-w-0">
+                                    <div className="flex flex-wrap items-center gap-1.5">
+                                      <p className="font-bold text-white truncate">{item.productName}</p>
+                                      <span
+                                        className={`px-1.5 py-0.2 rounded text-[9px] font-bold uppercase border ${getDepartmentBadgeClasses(spec.department)}`}
+                                      >
+                                        {getDepartmentLabel(spec.department)}
+                                      </span>
+                                    </div>
+                                    <p className="text-[11px] text-[#C89B3C] font-semibold">
+                                      {item.variantLabel}
+                                      {spec.department === 'coffee' ? ` • ${spec.primaryTag}` : spec.packingNote ? ` • ${spec.packingNote}` : ''} • SKU: {item.sku}
+                                    </p>
+                                  </div>
+                                </div>
+
+                                <div className="text-right shrink-0">
+                                  <span className="font-bold text-white">₹{item.lineTotal || (item.unitPrice * item.quantity)}</span>
+                                  <span className="text-[10px] text-gray-500 block">
+                                    (₹{item.unitPrice} each)
+                                  </span>
                                 </div>
                               </div>
-
-                              <div className="text-right shrink-0">
-                                <span className="font-bold text-white">₹{item.lineTotal || (item.unitPrice * item.quantity)}</span>
-                                <span className="text-[10px] text-gray-500 block">
-                                  (₹{item.unitPrice} each)
-                                </span>
-                              </div>
-                            </div>
-                          ))}
+                            );
+                          })}
                         </div>
 
                         {/* Order Cost Breakdown Strip */}
@@ -678,19 +737,36 @@ function AdminDashboardPage() {
               </h3>
             </div>
             <p className="text-xs text-[#B5A490] mt-1">
-              Click "Mark Out of Stock" to immediately disable customer purchasing on any variant or roast.
+              Click "Mark Out" to immediately disable customer purchasing on any variant across Coffee, Chocolates, and Wines.
             </p>
           </div>
 
-          <div className="flex items-center space-x-2">
-            <span className="text-xs text-[#B5A490]">
-              Showing all <strong className="text-white">{products.length}</strong> Estate Roasts
-            </span>
+          <div className="flex flex-wrap items-center gap-2">
+            {(
+              [
+                { id: 'all', label: `All (${products.length})` },
+                { id: 'coffee', label: `Coffee (${coffeeCount})` },
+                { id: 'chocolate', label: `Chocolates (${chocoCount})` },
+                { id: 'wine', label: `Wines (${wineCount})` },
+              ] as const
+            ).map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setInventoryDeptFilter(tab.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                  inventoryDeptFilter === tab.id
+                    ? 'bg-[#C89B3C] text-black shadow-md'
+                    : 'bg-[#241D17] border border-[#3D3025] text-[#B5A490] hover:text-white'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {products.map((prod) => {
+          {filteredInventoryProducts.map((prod) => {
             const allVariantsOut = prod.variants.length > 0 && prod.variants.every((v) => v.stock <= 0);
             const outCount = prod.variants.filter((v) => v.stock <= 0).length;
 
@@ -789,7 +865,7 @@ function AdminDashboardPage() {
                               <button
                                 onClick={() => handleAdjustQty(prod.id, v.variantId, -10)}
                                 className="px-2.5 py-1 text-gray-400 hover:text-white hover:bg-[#3D3025] font-bold"
-                                title="Decrease 10 pouches"
+                                title="Decrease 10 units"
                               >
                                 -10
                               </button>
@@ -799,7 +875,7 @@ function AdminDashboardPage() {
                               <button
                                 onClick={() => handleAdjustQty(prod.id, v.variantId, 10)}
                                 className="px-2.5 py-1 text-gray-400 hover:text-white hover:bg-[#3D3025] font-bold"
-                                title="Add 10 pouches"
+                                title="Add 10 units"
                               >
                                 +10
                               </button>

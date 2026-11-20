@@ -3,6 +3,12 @@ import { createFileRoute } from '@tanstack/react-router';
 import { FileSpreadsheet, Download, Calendar, Filter, FileText } from 'lucide-react';
 import { AdminLayout } from '../../components/admin/AdminLayout';
 import { getOrders, getProducts, getCategories } from '../../lib/services/store-service';
+import {
+  ProductDepartment,
+  getProductDepartment,
+  getOrderDepartments,
+  getDepartmentLabel,
+} from '../../lib/utils/product-kind';
 
 export const Route = createFileRoute('/admin/reports')({
   component: AdminReportsPage,
@@ -11,21 +17,31 @@ export const Route = createFileRoute('/admin/reports')({
 function AdminReportsPage() {
   const [reportType, setReportType] = useState<'sales' | 'orders' | 'inventory' | 'customers'>('sales');
   const [dateRange, setDateRange] = useState<'today' | '7_days' | '30_days' | 'all'>('all');
+  const [deptFilter, setDeptFilter] = useState<'all' | ProductDepartment>('all');
 
-  const orders = getOrders();
-  const products = getProducts();
+  const allOrders = getOrders();
+  const allProducts = getProducts();
+
+  const orders = allOrders.filter((o) =>
+    deptFilter === 'all' ? true : getOrderDepartments(o.items).departments.includes(deptFilter)
+  );
+  const products = allProducts.filter((p) =>
+    deptFilter === 'all' ? true : getProductDepartment(p) === deptFilter
+  );
 
   const handleExportCSV = () => {
     let csvRows: string[] = [];
 
     if (reportType === 'orders' || reportType === 'sales') {
-      csvRows.push(['Order Number', 'Date', 'Customer Name', 'Status', 'Grand Total (INR)', 'Payment Status', 'Courier'].join(','));
+      csvRows.push(['Order Number', 'Date', 'Customer Name', 'Categories', 'Status', 'Grand Total (INR)', 'Payment Status', 'Courier'].join(','));
       orders.forEach((o) => {
+        const cats = getOrderDepartments(o.items).departments.map(getDepartmentLabel).join(' / ');
         csvRows.push(
           [
             `"${o.orderNumber}"`,
             `"${new Date(o.createdAt).toLocaleDateString()}"`,
             `"${o.shippingAddress.fullName}"`,
+            `"${cats || 'Coffee'}"`,
             `"${o.status}"`,
             o.grandTotal,
             `"${o.paymentStatus}"`,
@@ -34,15 +50,18 @@ function AdminReportsPage() {
         );
       });
     } else {
-      csvRows.push(['Product ID', 'Name', 'Category', 'Roast Level', 'Total Variants', 'Active'].join(','));
+      csvRows.push(['Product ID', 'Name', 'Department', 'Category', 'Type / Roast', 'Total Variants', 'Total Stock', 'Active'].join(','));
       products.forEach((p) => {
+        const totalStock = p.variants.reduce((acc, v) => acc + (v.stock || 0), 0);
         csvRows.push(
           [
             `"${p.id}"`,
             `"${p.name}"`,
+            `"${getDepartmentLabel(getProductDepartment(p))}"`,
             `"${p.categoryName}"`,
             `"${p.roastLevel}"`,
             p.variants.length,
+            totalStock,
             p.active ? 'Yes' : 'No',
           ].join(',')
         );
@@ -80,7 +99,7 @@ function AdminReportsPage() {
           <h3 className="font-display text-xl text-white font-bold">CONFIGURE REPORT EXPORT</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
           <div>
             <label className="block text-gray-300 font-bold mb-1">Select Report Type</label>
             <select
@@ -92,6 +111,20 @@ function AdminReportsPage() {
               <option value="orders">Orders &amp; Dispatch Report</option>
               <option value="inventory">Inventory &amp; SKU Stock Report</option>
               <option value="customers">Customer Directory Report</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-gray-300 font-bold mb-1">Product Category</label>
+            <select
+              value={deptFilter}
+              onChange={(e) => setDeptFilter(e.target.value as 'all' | ProductDepartment)}
+              className="w-full p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] text-white focus:outline-none focus:border-[#C89B3C]"
+            >
+              <option value="all">All Categories (Coffee, Chocolates &amp; Wines)</option>
+              <option value="coffee">Estate Coffees Only</option>
+              <option value="chocolate">Artisanal Chocolates Only</option>
+              <option value="wine">Homemade Fruit Wines Only</option>
             </select>
           </div>
 
@@ -143,6 +176,7 @@ function AdminReportsPage() {
                   <th className="py-2.5 px-2">ORDER #</th>
                   <th className="py-2.5 px-2">DATE</th>
                   <th className="py-2.5 px-2">CUSTOMER</th>
+                  <th className="py-2.5 px-2">CATEGORY</th>
                   <th className="py-2.5 px-2">STATUS</th>
                   <th className="py-2.5 px-2">GRAND TOTAL</th>
                 </tr>
@@ -153,6 +187,9 @@ function AdminReportsPage() {
                     <td className="py-2.5 px-2 font-mono text-[#C89B3C] font-bold">{o.orderNumber}</td>
                     <td className="py-2.5 px-2 text-gray-400">{new Date(o.createdAt).toLocaleDateString()}</td>
                     <td className="py-2.5 px-2 text-white font-bold">{o.shippingAddress.fullName}</td>
+                    <td className="py-2.5 px-2 text-amber-200 text-[11px]">
+                      {getOrderDepartments(o.items).departments.map(getDepartmentLabel).join(', ') || 'Coffee'}
+                    </td>
                     <td className="py-2.5 px-2 text-gray-300">{o.status}</td>
                     <td className="py-2.5 px-2 font-bold text-emerald-400">₹{o.grandTotal}</td>
                   </tr>
@@ -167,19 +204,24 @@ function AdminReportsPage() {
                 <tr className="border-b border-[#3D3025] text-[#B5A490] font-bold">
                   <th className="py-2.5 px-2">PRODUCT NAME</th>
                   <th className="py-2.5 px-2">CATEGORY</th>
-                  <th className="py-2.5 px-2">ROAST</th>
-                  <th className="py-2.5 px-2">VARIANTS</th>
+                  <th className="py-2.5 px-2">TYPE / ROAST</th>
+                  <th className="py-2.5 px-2">VARIANTS &amp; STOCK</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#2A211B]">
-                {products.map((p) => (
-                  <tr key={p.id}>
-                    <td className="py-2.5 px-2 text-white font-bold">{p.name}</td>
-                    <td className="py-2.5 px-2 text-[#C89B3C]">{p.categoryName}</td>
-                    <td className="py-2.5 px-2 text-gray-300">{p.roastLevel}</td>
-                    <td className="py-2.5 px-2 text-gray-400">{p.variants.length} SKU Variants</td>
-                  </tr>
-                ))}
+                {products.map((p) => {
+                  const totalStock = p.variants.reduce((acc, v) => acc + (v.stock || 0), 0);
+                  return (
+                    <tr key={p.id}>
+                      <td className="py-2.5 px-2 text-white font-bold">{p.name}</td>
+                      <td className="py-2.5 px-2 text-[#C89B3C]">{p.categoryName}</td>
+                      <td className="py-2.5 px-2 text-gray-300">{p.roastLevel}</td>
+                      <td className="py-2.5 px-2 text-gray-400">
+                        {p.variants.length} {p.variants.length === 1 ? 'Pack' : 'Packs'} • {totalStock} units
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

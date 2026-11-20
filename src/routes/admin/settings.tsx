@@ -216,7 +216,7 @@ function AdminSettingsPage() {
           </div>
 
           <p className="text-gray-400 text-xs leading-relaxed">
-            When a customer successfully completes an order, automated order notification messages are triggered to these phone numbers with complete order items, pouch sizes, grind options, and shipping address.
+            When a customer successfully completes an order, automated order notification messages are triggered to these phone numbers with complete order items, pack sizes, grind or bottle options, and shipping address.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

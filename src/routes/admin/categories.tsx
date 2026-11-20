@@ -70,7 +70,7 @@ function AdminCategoriesPage() {
     <AdminLayout
       activeModule="categories"
       title="CATEGORY MANAGEMENT"
-      subtitle="Organize estate coffees by Arabica, Robusta, Signature Blends, and custom collections."
+      subtitle="Organize estate coffees, artisanal chocolates, homemade fruit wines, and custom collections."
     >
       <div className="flex justify-between items-center p-4 rounded-2xl bg-[#1C1612] border border-[#3D3025]">
         <div>
@@ -184,7 +184,7 @@ function AdminCategoriesPage() {
                   rows={3}
                   value={editingCategory.description || ''}
                   onChange={(e) => setEditingCategory({ ...editingCategory, description: e.target.value })}
-                  placeholder="Brief summary of coffee type..."
+                  placeholder="Brief summary of products in this category..."
                   className="w-full p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] text-white focus:outline-none focus:border-[#C89B3C]"
                 />
               </div>

@@ -301,6 +301,9 @@ function CheckoutPage() {
       lineTotal: i.unitPrice * i.quantity,
       image: i.image,
       grindOption: i.grindOption || '',
+      roastLevel: i.roastLevel || '',
+      ...(i.weightGrams !== undefined ? { weightGrams: i.weightGrams } : {}),
+      ...(i.deliveryFee !== undefined ? { deliveryFee: i.deliveryFee } : {}),
     }));
 
     const newOrder: Order = {

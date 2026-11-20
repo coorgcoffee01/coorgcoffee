@@ -140,11 +140,11 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
                   COORG ESTATE CONSOLE
                 </h1>
                 <span className="text-[9px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#C89B3C]/20 text-[#C89B3C] border border-[#C89B3C]/40">
-                  V2.5 LIVE
+                  V2.6 LIVE
                 </span>
               </div>
               <p className="text-[11px] text-[#B5A490]">
-                Manager: <strong className="text-white">{admin?.name || 'Administrator'}</strong> ({admin?.role || 'Super Admin'})
+                Coffee, Chocolates &amp; Wines • Manager: <strong className="text-white">{admin?.name || 'Administrator'}</strong> ({admin?.role || 'Super Admin'})
               </p>
             </div>
           </div>

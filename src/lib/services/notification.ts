@@ -1,6 +1,7 @@
 import { NotificationLog, Order } from '../types';
 import { db } from '../firebase/config';
 import { collection, addDoc } from 'firebase/firestore';
+import { getProductDepartment, isGlassBottleItem } from '../utils/product-kind';
 
 /**
  * Designated Estate Manager Phone Numbers to receive instant order alerts
@@ -23,7 +24,16 @@ export interface NotificationProvider {
  */
 export function formatOrderWhatsAppAlert(order: Order): string {
   const itemsText = order.items
-    .map((item, idx) => `${idx + 1}. *${item.productName}* (${item.variantLabel} • ${item.grindOption || 'Filter Grind'}) x ${item.quantity} = ₹${item.lineTotal}`)
+    .map((item, idx) => {
+      const dept = getProductDepartment(item);
+      let spec = item.variantLabel;
+      if (dept === 'coffee') {
+        spec = `${item.variantLabel} • ${item.grindOption || 'Filter Grind'}`;
+      } else if (dept === 'wine' && isGlassBottleItem(item)) {
+        spec = `${item.variantLabel} • FRAGILE GLASS`;
+      }
+      return `${idx + 1}. *${item.productName}* (${spec}) x ${item.quantity} = ₹${item.lineTotal}`;
+    })
     .join('\n');
 
   return (

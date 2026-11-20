@@ -17,6 +17,7 @@ import { TrendingUp, Package, DollarSign, PieChart as PieIcon, BarChart3 } from 
 import { AdminLayout } from '../../components/admin/AdminLayout';
 import { getOrders, getProducts } from '../../lib/services/store-service';
 import { Order, Product } from '../../lib/types';
+import { getProductDepartment, ProductDepartment } from '../../lib/utils/product-kind';
 
 export const Route = createFileRoute('/admin/analytics')({
   component: AdminAnalyticsPage,
@@ -45,6 +46,34 @@ function AdminAnalyticsPage() {
   );
   const aov = orders.length > 0 ? Math.round(totalRevenue / orders.length) : 0;
 
+  const coffeeCount = products.filter((p) => getProductDepartment(p) === 'coffee').length;
+  const chocoCount = products.filter((p) => getProductDepartment(p) === 'chocolate').length;
+  const wineCount = products.filter((p) => getProductDepartment(p) === 'wine').length;
+
+  // Real revenue & unit breakdown by department (Coffee, Chocolates, Wines)
+  const deptStats: Record<ProductDepartment, { revenue: number; units: number; orderCount: number }> = {
+    coffee: { revenue: 0, units: 0, orderCount: 0 },
+    chocolate: { revenue: 0, units: 0, orderCount: 0 },
+    wine: { revenue: 0, units: 0, orderCount: 0 },
+  };
+  const productSalesMap = new Map<string, number>();
+
+  orders.forEach((o) => {
+    if (o.status === 'Cancelled' || o.paymentStatus === 'refunded') return;
+    const seenDepts = new Set<ProductDepartment>();
+    (o.items || []).forEach((item) => {
+      const dept = getProductDepartment(item);
+      const lineTotal = item.lineTotal || item.unitPrice * item.quantity;
+      deptStats[dept].revenue += lineTotal;
+      deptStats[dept].units += item.quantity;
+      seenDepts.add(dept);
+      productSalesMap.set(item.productName, (productSalesMap.get(item.productName) || 0) + lineTotal);
+    });
+    seenDepts.forEach((d) => {
+      deptStats[d].orderCount += 1;
+    });
+  });
+
   // Chart 1: Revenue Trends over months / simulated timeline
   const revenueTrendData = [
     { period: 'Jan 2026', revenue: 4200, orders: 8 },
@@ -57,11 +86,22 @@ function AdminAnalyticsPage() {
     { period: 'Aug 2026', revenue: totalRevenue > 0 ? totalRevenue : 32400, orders: orders.length || 54 },
   ];
 
-  // Chart 2: Top Products by Order Count / Sales
-  const topProductsData = products.slice(0, 5).map((p) => ({
-    name: p.name.length > 15 ? p.name.substring(0, 15) + '...' : p.name,
-    sales: p.variants.reduce((acc, v) => acc + (100 - v.stock), 0) * 15,
-  }));
+  // Chart 2: Top Products by real order revenue (falls back to inventory activity across categories)
+  const realTopProducts = Array.from(productSalesMap.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name, sales]) => ({
+      name: name.length > 15 ? name.substring(0, 15) + '...' : name,
+      sales,
+    }));
+
+  const topProductsData =
+    realTopProducts.length > 0
+      ? realTopProducts
+      : products.slice(0, 6).map((p) => ({
+          name: p.name.length > 15 ? p.name.substring(0, 15) + '...' : p.name,
+          sales: p.variants.reduce((acc, v) => acc + Math.max(0, 100 - v.stock), 0) * 15,
+        }));
 
   // Chart 3: Order Status Distribution
   const statusCounts = orders.reduce((acc: Record<string, number>, o) => {
@@ -80,7 +120,7 @@ function AdminAnalyticsPage() {
     <AdminLayout
       activeModule="analytics"
       title="BUSINESS ANALYTICS &amp; SALES TRENDS"
-      subtitle="Comprehensive revenue charts, top-selling estate coffee rankings, and order distribution insights."
+      subtitle="Revenue insights, performance across Coffee, Artisanal Chocolates &amp; Homemade Wines, and order distribution."
     >
       {/* High Level Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -97,9 +137,11 @@ function AdminAnalyticsPage() {
         </div>
 
         <div className="p-6 rounded-2xl bg-[#1C1612] border border-[#3D3025] space-y-2">
-          <span className="text-xs text-[#B5A490] font-bold uppercase tracking-wider">ESTATE SKUS ACTIVE</span>
+          <span className="text-xs text-[#B5A490] font-bold uppercase tracking-wider">ESTATE CATALOG ACTIVE</span>
           <p className="font-display text-3xl text-white font-bold">{products.length}</p>
-          <p className="text-[10px] text-blue-400">100% Coorg Elevation Grown</p>
+          <p className="text-[10px] text-[#C89B3C] font-semibold">
+            {coffeeCount} Coffee • {chocoCount} Chocolates • {wineCount} Wines
+          </p>
         </div>
 
         <div className="p-6 rounded-2xl bg-[#1C1612] border border-[#3D3025] space-y-2">
@@ -107,6 +149,55 @@ function AdminAnalyticsPage() {
           <p className="font-display text-3xl text-emerald-400 font-bold">3.8%</p>
           <p className="text-[10px] text-emerald-400">High checkout completion</p>
         </div>
+      </div>
+
+      {/* Category Revenue Breakdown (Coffee / Chocolates / Wines) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {(
+          [
+            {
+              key: 'coffee' as const,
+              title: 'ESTATE COFFEES',
+              skus: `${coffeeCount} Varieties`,
+              accent: 'text-[#C89B3C] border-[#C89B3C]/30',
+            },
+            {
+              key: 'chocolate' as const,
+              title: 'ARTISANAL CHOCOLATES',
+              skus: `${chocoCount} Varieties`,
+              accent: 'text-amber-300 border-amber-500/30',
+            },
+            {
+              key: 'wine' as const,
+              title: 'HOMEMADE FRUIT WINES',
+              skus: `${wineCount} Flavours`,
+              accent: 'text-rose-300 border-rose-500/30',
+            },
+          ]
+        ).map((card) => {
+          const stat = deptStats[card.key];
+          return (
+            <div
+              key={card.key}
+              className="p-5 rounded-2xl bg-[#1C1612] border border-[#3D3025] flex items-center justify-between"
+            >
+              <div className="space-y-1">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#B5A490] block">
+                  {card.title}
+                </span>
+                <p className="font-display text-2xl text-white font-bold">
+                  ₹{stat.revenue.toLocaleString('en-IN')}
+                </p>
+                <p className="text-[11px] text-gray-400">
+                  {stat.units} units across {stat.orderCount} {stat.orderCount === 1 ? 'order' : 'orders'}
+                </p>
+              </div>
+              <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold border bg-[#241D17] ${card.accent}`}>
+                {card.skus}
+              </span>
+            </div>
+          );
+        })}
       </div>
 
       {/* Revenue Trend Area Chart */}

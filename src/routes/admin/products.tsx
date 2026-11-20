@@ -34,6 +34,7 @@ import { useAuth } from '../../context/AuthContext';
 import { newsletterService } from '../../lib/services/newsletter-service';
 import { toast } from 'sonner';
 import { ConfirmDialog, DeleteProductDialog, ConfirmDialogProps } from '../../components/admin/ConfirmDialog';
+import { getProductDepartment } from '../../lib/utils/product-kind';
 
 export const Route = createFileRoute('/admin/products')({
   component: AdminProductsPage,
@@ -182,7 +183,7 @@ function AdminProductsPage() {
             Are you sure you want to restore <strong className="text-white font-bold">{prod?.name}</strong> back to active store listings?
           </p>
           <p className="text-[11px] text-gray-400 mt-1">
-            Customers will immediately be able to view and purchase this roast again on the storefront.
+            Customers will immediately be able to view and purchase this product again on the storefront.
           </p>
         </div>
       ),
@@ -340,22 +341,48 @@ function AdminProductsPage() {
       editingProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     const cat = categories.find((c) => c.id === editingProduct.categoryId);
+    const editDept = getProductDepartment({
+      categoryId: editingProduct.categoryId,
+      categoryName: cat?.name,
+      roastLevel: editingProduct.roastLevel,
+    });
+    const defaultRoastLevel =
+      editDept === 'chocolate'
+        ? 'Artisanal Chocolate'
+        : editDept === 'wine'
+        ? 'Artisanal Wine'
+        : 'Medium';
 
     const productToSave: Product = {
       id: editingProduct.id || `prod-${Date.now()}`,
       name: editingProduct.name,
       slug,
-      tagline: editingProduct.tagline || 'Artisan Roasted Coorg Blend',
+      tagline:
+        editingProduct.tagline ||
+        (editDept === 'chocolate'
+          ? 'Handcrafted Coorg Artisanal Chocolate'
+          : editDept === 'wine'
+          ? 'Authentic Kodagu Homemade Fruit Wine'
+          : 'Artisan Roasted Coorg Blend'),
       description: editingProduct.description || '',
-      roastLevel: editingProduct.roastLevel || 'Medium',
-      grindOptions: editingProduct.grindOptions || [],
-      categoryId: editingProduct.categoryId || 'cat-arabica',
-      categoryName: cat ? cat.name : 'Arabica Specials',
-      images: editingProduct.images && editingProduct.images.length > 0 ? editingProduct.images : ['https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80'],
+      roastLevel: editingProduct.roastLevel || defaultRoastLevel,
+      grindOptions: editDept === 'coffee' ? (editingProduct.grindOptions || []) : [],
+      categoryId: editingProduct.categoryId || 'cat-beans',
+      categoryName: cat ? cat.name : 'AA Grade Beans',
+      images:
+        editingProduct.images && editingProduct.images.length > 0
+          ? editingProduct.images
+          : [
+              editDept === 'chocolate'
+                ? '/images/home-artisanal-chocolates.jpg'
+                : editDept === 'wine'
+                ? '/images/home-fruit-wines.jpg'
+                : '/products/blend-roasted-beans.jpg',
+            ],
       ratingAvg: editingProduct.ratingAvg || 5.0,
       ratingCount: editingProduct.ratingCount || 1,
       featured: Boolean(editingProduct.featured),
-      accentColor: editingProduct.accentColor || 'green',
+      accentColor: editingProduct.accentColor || 'amber',
       active: editingProduct.active !== undefined ? editingProduct.active : true,
       variants: editingProduct.variants || [],
       createdAt: editingProduct.createdAt || new Date().toISOString(),
@@ -370,15 +397,15 @@ function AdminProductsPage() {
         const res = await newsletterService.notifySubscribers({
           templateType: isNew ? 'new_product_launch' : 'price_drop_alert',
           subject: isNew
-            ? `🚀 New Release: ${productToSave.name} has arrived!`
-            : `📉 Special Alert: ${productToSave.name} updated offer!`,
-          title: isNew ? `New Roast Launch: ${productToSave.name}` : `Offer Update: ${productToSave.name}`,
+            ? `New Release: ${productToSave.name} has arrived!`
+            : `Special Alert: ${productToSave.name} updated offer!`,
+          title: isNew ? `New Release: ${productToSave.name}` : `Offer Update: ${productToSave.name}`,
           message: productToSave.tagline || productToSave.description,
           productName: productToSave.name,
           productImage: productToSave.images[0] || '',
           newPrice: (mainVar?.salePrice || mainVar?.price) ?? 0,
-          ctaText: 'SHOP THIS ROAST NOW',
-          ctaUrl: `https://webtech-6dfba--staging-t9tcm2ki.web.app/product/${productToSave.slug}`,
+          ctaText: 'SHOP NOW',
+          ctaUrl: `https://coorgcoffees.in/product/${productToSave.slug}`,
         });
         toast.success(`Saved product & emailed ${res.sent} active subscriber(s)!`);
       } catch (err) {
@@ -418,7 +445,7 @@ function AdminProductsPage() {
     <AdminLayout
       activeModule="products"
       title="PRODUCT &amp; CATALOGUE MANAGEMENT"
-      subtitle="Manage estate coffee products, pricing, discounts, SKU variants, and live inventory stock counts."
+      subtitle="Manage estate coffees, artisanal chocolates, homemade fruit wines, pricing, SKU variants, and live stock counts."
     >
       {/* Top Filter Bar */}
       <div className="space-y-3 p-4 rounded-2xl bg-[#1C1612] border border-[#3D3025]">
@@ -442,12 +469,14 @@ function AdminProductsPage() {
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="px-3 py-2 bg-[#241D17] border border-[#3D3025] rounded-xl text-xs text-white focus:outline-none focus:border-[#C89B3C]"
             >
-              <option value="all">All Categories ({products.length})</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
+              <option value="all">All Categories ({activeProducts.length})</option>
+              {categories
+                .filter((cat) => cat.id !== 'cat-all')
+                .map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -639,7 +668,9 @@ function AdminProductsPage() {
                         ) : null}
                       </div>
                       <p className="text-xs text-[#C89B3C] font-semibold">
-                        {product.categoryName} • {product.roastLevel} Roast
+                        {getProductDepartment(product) === 'coffee'
+                          ? `${product.categoryName} • ${product.roastLevel} Roast`
+                          : `${product.categoryName} • ${product.variants.map((v) => v.label).join(' / ')}`}
                       </p>
                       <p className="text-[11px] text-gray-400 line-clamp-1 mt-0.5">{product.tagline}</p>
                     </div>
@@ -831,14 +862,81 @@ function AdminProductsPage() {
                   <label className="block text-gray-300 font-bold mb-1">Category *</label>
                   <select
                     value={editingProduct.categoryId || ''}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, categoryId: e.target.value })}
+                    onChange={(e) => {
+                      const nextCatId = e.target.value;
+                      const nextDept = getProductDepartment({ categoryId: nextCatId });
+                      const isCreating = !editingProduct.id;
+                      const nextState: Partial<Product> = {
+                        ...editingProduct,
+                        categoryId: nextCatId,
+                      };
+                      if (nextDept === 'chocolate') {
+                        nextState.roastLevel = 'Artisanal Chocolate';
+                        nextState.grindOptions = [];
+                        if (isCreating) {
+                          nextState.variants = [
+                            {
+                              variantId: `var-${Date.now()}-250`,
+                              productId: '',
+                              label: '250g Tub',
+                              sku: 'CC-CHOC-NEW-250',
+                              price: 350,
+                              salePrice: null,
+                              stock: 50,
+                              active: true,
+                              weightGrams: 250,
+                              deliveryFee: 70,
+                            },
+                          ];
+                        }
+                      } else if (nextDept === 'wine') {
+                        nextState.roastLevel = 'Artisanal Wine';
+                        nextState.grindOptions = [];
+                        if (isCreating) {
+                          nextState.variants = [
+                            {
+                              variantId: `var-${Date.now()}-plas`,
+                              productId: '',
+                              label: '750ml Plastic Bottle',
+                              sku: 'CC-WINE-NEW-PLAS-750',
+                              price: 499,
+                              salePrice: null,
+                              stock: 50,
+                              active: true,
+                              weightGrams: 750,
+                              deliveryFee: 70,
+                            },
+                            {
+                              variantId: `var-${Date.now()}-glas`,
+                              productId: '',
+                              label: '750ml Glass Bottle',
+                              sku: 'CC-WINE-NEW-GLAS-750',
+                              price: 599,
+                              salePrice: null,
+                              stock: 40,
+                              active: true,
+                              weightGrams: 1200,
+                              deliveryFee: 70,
+                            },
+                          ];
+                        }
+                      } else if (
+                        nextState.roastLevel === 'Artisanal Chocolate' ||
+                        nextState.roastLevel === 'Artisanal Wine'
+                      ) {
+                        nextState.roastLevel = 'Medium';
+                      }
+                      setEditingProduct(nextState);
+                    }}
                     className="w-full p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] text-white focus:outline-none focus:border-[#C89B3C]"
                   >
-                    {categories.map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name}
-                      </option>
-                    ))}
+                    {categories
+                      .filter((c) => c.id !== 'cat-all')
+                      .map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.name}
+                        </option>
+                      ))}
                   </select>
                 </div>
               </div>
@@ -856,19 +954,168 @@ function AdminProductsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-bold mb-1">Roast Level</label>
-                  <select
-                    value={editingProduct.roastLevel || 'Medium'}
-                    onChange={(e) =>
-                      setEditingProduct({ ...editingProduct, roastLevel: e.target.value as any })
+                  {(() => {
+                    const modalDept = getProductDepartment({
+                      categoryId: editingProduct.categoryId,
+                      roastLevel: editingProduct.roastLevel,
+                    });
+                    if (modalDept === 'chocolate') {
+                      return (
+                        <>
+                          <label className="block text-gray-300 font-bold mb-1">Chocolate Style</label>
+                          <select
+                            value={editingProduct.roastLevel || 'Artisanal Chocolate'}
+                            onChange={(e) =>
+                              setEditingProduct({ ...editingProduct, roastLevel: e.target.value })
+                            }
+                            className="w-full p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] text-white focus:outline-none focus:border-[#C89B3C]"
+                          >
+                            <option value="Artisanal Chocolate">Artisanal Chocolate</option>
+                            <option value="Sugar-Free Dark Chocolate">Sugar-Free Dark Chocolate</option>
+                            <option value="Crispy Chocolate Balls">Crispy Chocolate Balls</option>
+                            <option value="Assorted Chocolate Collection">Assorted Chocolate Collection</option>
+                          </select>
+                        </>
+                      );
                     }
-                    className="w-full p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] text-white focus:outline-none focus:border-[#C89B3C]"
+                    if (modalDept === 'wine') {
+                      return (
+                        <>
+                          <label className="block text-gray-300 font-bold mb-1">Wine Style</label>
+                          <select
+                            value={editingProduct.roastLevel || 'Artisanal Wine'}
+                            onChange={(e) =>
+                              setEditingProduct({ ...editingProduct, roastLevel: e.target.value })
+                            }
+                            className="w-full p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] text-white focus:outline-none focus:border-[#C89B3C]"
+                          >
+                            <option value="Artisanal Wine">Artisanal Wine</option>
+                            <option value="Homemade Fruit Wine">Homemade Fruit Wine</option>
+                            <option value="Spiced Estate Wine">Spiced Estate Wine</option>
+                          </select>
+                        </>
+                      );
+                    }
+                    return (
+                      <>
+                        <label className="block text-gray-300 font-bold mb-1">Roast Level</label>
+                        <select
+                          value={editingProduct.roastLevel || 'Medium'}
+                          onChange={(e) =>
+                            setEditingProduct({ ...editingProduct, roastLevel: e.target.value as any })
+                          }
+                          className="w-full p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] text-white focus:outline-none focus:border-[#C89B3C]"
+                        >
+                          <option value="Light">Light Roast</option>
+                          <option value="Medium">Medium Roast</option>
+                          <option value="Medium-Dark">Medium-Dark Roast</option>
+                          <option value="Dark">Dark Roast</option>
+                        </select>
+                      </>
+                    );
+                  })()}
+                </div>
+              </div>
+
+              {/* Variants Pricing & Pack Labels Editor */}
+              <div className="space-y-2.5 pt-1">
+                <div className="flex items-center justify-between">
+                  <label className="block text-gray-300 font-bold">
+                    Pack Variants &amp; Pricing ({(editingProduct.variants || []).length})
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const current = editingProduct.variants || [];
+                      const nextVar: ProductVariant = {
+                        variantId: `var-${Date.now()}`,
+                        productId: editingProduct.id || '',
+                        label: 'New Pack',
+                        sku: `CC-SKU-${current.length + 1}`,
+                        price: 399,
+                        salePrice: null,
+                        stock: 50,
+                        active: true,
+                        deliveryFee: 70,
+                      };
+                      setEditingProduct({ ...editingProduct, variants: [...current, nextVar] });
+                    }}
+                    className="text-[11px] font-bold text-[#C89B3C] hover:underline cursor-pointer"
                   >
-                    <option value="Light">Light Roast</option>
-                    <option value="Medium">Medium Roast</option>
-                    <option value="Medium-Dark">Medium-Dark Roast</option>
-                    <option value="Dark">Dark Roast</option>
-                  </select>
+                    + Add Variant
+                  </button>
+                </div>
+                <div className="space-y-2">
+                  {(editingProduct.variants || []).map((v, vIdx) => (
+                    <div
+                      key={v.variantId || vIdx}
+                      className="grid grid-cols-12 gap-2 p-2.5 rounded-xl bg-[#241D17] border border-[#3D3025] items-center"
+                    >
+                      <input
+                        type="text"
+                        value={v.label}
+                        onChange={(e) => {
+                          const next = [...(editingProduct.variants || [])];
+                          next[vIdx] = { ...v, label: e.target.value };
+                          setEditingProduct({ ...editingProduct, variants: next });
+                        }}
+                        placeholder="Label (e.g. 250g Tub)"
+                        className="col-span-4 px-2 py-1.5 rounded-lg bg-[#1C1612] border border-[#3D3025] text-white text-xs focus:outline-none focus:border-[#C89B3C]"
+                      />
+                      <input
+                        type="text"
+                        value={v.sku}
+                        onChange={(e) => {
+                          const next = [...(editingProduct.variants || [])];
+                          next[vIdx] = { ...v, sku: e.target.value };
+                          setEditingProduct({ ...editingProduct, variants: next });
+                        }}
+                        placeholder="SKU"
+                        className="col-span-3 px-2 py-1.5 rounded-lg bg-[#1C1612] border border-[#3D3025] text-gray-300 font-mono text-[11px] focus:outline-none focus:border-[#C89B3C]"
+                      />
+                      <input
+                        type="number"
+                        min={1}
+                        value={v.price}
+                        onChange={(e) => {
+                          const next = [...(editingProduct.variants || [])];
+                          next[vIdx] = { ...v, price: Number(e.target.value) };
+                          setEditingProduct({ ...editingProduct, variants: next });
+                        }}
+                        placeholder="MRP ₹"
+                        title="MRP (₹)"
+                        className="col-span-2 px-2 py-1.5 rounded-lg bg-[#1C1612] border border-[#3D3025] text-[#C89B3C] font-bold text-xs focus:outline-none focus:border-[#C89B3C]"
+                      />
+                      <input
+                        type="number"
+                        min={0}
+                        value={v.deliveryFee ?? 70}
+                        onChange={(e) => {
+                          const next = [...(editingProduct.variants || [])];
+                          next[vIdx] = { ...v, deliveryFee: Number(e.target.value) };
+                          setEditingProduct({ ...editingProduct, variants: next });
+                        }}
+                        placeholder="Ship ₹"
+                        title="Delivery Fee (₹)"
+                        className="col-span-2 px-2 py-1.5 rounded-lg bg-[#1C1612] border border-[#3D3025] text-gray-300 text-xs focus:outline-none focus:border-[#C89B3C]"
+                      />
+                      <div className="col-span-1 flex justify-end">
+                        {(editingProduct.variants || []).length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const next = (editingProduct.variants || []).filter((_, i) => i !== vIdx);
+                              setEditingProduct({ ...editingProduct, variants: next });
+                            }}
+                            className="p-1 rounded text-red-400 hover:bg-red-500/20 cursor-pointer"
+                            title="Remove Variant"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -946,10 +1193,10 @@ function AdminProductsPage() {
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {[
-                      { label: 'Filter Powder', url: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80' },
-                      { label: 'Roasted Beans', url: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80' },
-                      { label: 'Fresh Cup Brew', url: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?auto=format&fit=crop&w=800&q=80' },
-                      { label: 'Estate Harvest', url: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=800&q=80' },
+                      { label: 'Filter Powder', url: '/products/arabica-filter-coffee.jpg' },
+                      { label: 'Roasted Beans', url: '/products/blend-roasted-beans.jpg' },
+                      { label: 'Artisanal Chocolate', url: '/products/chocolates/milk-cashew.jpg' },
+                      { label: 'Homemade Fruit Wine', url: '/products/wines/red-wine.jpg' },
                     ].map((preset) => (
                       <button
                         key={preset.label}

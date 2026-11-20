@@ -157,7 +157,7 @@ function AdminReviewsPage() {
                   </div>
                   <p className="text-xs text-gray-400 mt-1">
                     Submitted by <strong className="text-white">{rev.userName}</strong> on{' '}
-                    {new Date(rev.createdAt).toLocaleDateString()} for <strong className="text-[#C89B3C]">{rev.productName || 'Estate Coffee'}</strong>
+                    {new Date(rev.createdAt).toLocaleDateString()} for <strong className="text-[#C89B3C]">{rev.productName || 'Estate Product'}</strong>
                   </p>
                 </div>
 
