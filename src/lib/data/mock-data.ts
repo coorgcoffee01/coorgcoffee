@@ -747,7 +747,7 @@ export const ORIGINAL_PRODUCTS: Product[] = [
     name: 'Premium Milk Cashew Chocolate',
     slug: 'premium-milk-cashew-chocolate',
     aliases: ['milk-cashew-chocolate', 'milk-cashew'],
-    tagline: 'Creamy Chocolate Meets Crunchy Cashew! 🍫',
+    tagline: 'Creamy Chocolate Meets Crunchy Cashew!',
     shortDescription:
       'Enjoy the rich and creamy taste of premium milk chocolate loaded with crunchy golden roasted cashew nuts.',
     description: `Enjoy the rich and creamy taste of premium milk chocolate from the hills of Coorg.
@@ -803,7 +803,7 @@ Crafted with no artificial preservatives, this chocolate is an irresistible trea
     name: 'Premium Milk Vanilla Cashew Chocolate',
     slug: 'milk-vanilla-cashew-chocolate',
     aliases: ['vanilla-cashew-chocolate', 'milk-vanilla-cashew'],
-    tagline: 'Creamy Vanilla, Crunchy Cashew, Pure Chocolate Happiness! 🍫',
+    tagline: 'Creamy Vanilla, Crunchy Cashew, Pure Chocolate Happiness!',
     shortDescription:
       'Dual-layered bliss combining sweet Madagascan-style vanilla cream with rich milk chocolate and roasted cashews.',
     description: `A harmonious fusion of creamy vanilla and rich milk chocolate.
@@ -858,7 +858,7 @@ Each bite delivers a symphony of aromatic vanilla sweetness, smooth dairy chocol
     name: 'Premium Mango White Chocolate',
     slug: 'premium-mango-white-chocolate',
     aliases: ['mango-white-chocolate', 'mango-chocolate'],
-    tagline: 'A Taste of Tropical Mango in Every Bite! 🥭',
+    tagline: 'A Taste of Tropical Mango in Every Bite!',
     shortDescription:
       'Vibrant golden mango-infused creamy white chocolate cubes bursting with luscious tropical sweetness.',
     description: `Transport your senses to tropical orchards with our Premium Mango White Chocolate.
@@ -913,7 +913,7 @@ Cut into generous artisan cubes that melt smoothly on your tongue, it is an exot
     name: 'Premium Dark Cashew Chocolate',
     slug: 'premium-dark-cashew-chocolate',
     aliases: ['dark-cashew-chocolate', 'dark-cashew'],
-    tagline: 'Bold Dark Chocolate, Crunchy Cashew, Pure Happiness! 🍫',
+    tagline: 'Bold Dark Chocolate, Crunchy Cashew, Pure Happiness!',
     shortDescription:
       'Intense high-cocoa dark chocolate paired with crisp hand-roasted cashew nuts for a sophisticated bittersweet bite.',
     description: `For the discerning dark chocolate connoisseur.
@@ -970,7 +970,7 @@ Net Weight: 250g (Price per 100g: ₹144/-).`,
     name: 'Premium Dark Sugar-Free Chocolate',
     slug: 'premium-dark-sugar-free-chocolate',
     aliases: ['sugar-free-dark-chocolate', 'sugar-free-chocolate'],
-    tagline: 'Pure Dark Indulgence, Without Added Sugar! 🍫',
+    tagline: 'Pure Dark Indulgence, Without Added Sugar!',
     shortDescription:
       'Zero added sugar, 100% pure dark chocolate satisfaction. Guilt-free artisanal dark chocolate triangles.',
     description: `Indulge without compromise with our Premium Dark Sugar-Free Chocolate.
@@ -1027,7 +1027,7 @@ Net Weight: 150g (Price per 100g: ₹256.67).`,
     name: 'Premium Dark Chocolate Crispy Balls',
     slug: 'premium-dark-chocolate-crispy-balls',
     aliases: ['dark-crispy-balls', 'crispy-dark-balls'],
-    tagline: 'Crunchy on the Inside, Rich Chocolate on the Outside! 🍫',
+    tagline: 'Crunchy on the Inside, Rich Chocolate on the Outside!',
     shortDescription:
       'Malted crispy cereal centers enrobed in thick layers of decadent dark chocolate. The ultimate crunch snack!',
     description: `COORG COFFEE — Crunch Into Happiness!
@@ -1084,7 +1084,7 @@ Net Weight: 250g (Price per 100g: ₹178/-).`,
     name: 'Premium Mixed Assorted Chocolates',
     slug: 'premium-mixed-assorted-chocolates',
     aliases: ['mixed-assorted-chocolates', 'assorted-chocolates'],
-    tagline: 'A World of Chocolate Flavours in Every Box! 🍫',
+    tagline: 'A World of Chocolate Flavours in Every Box!',
     shortDescription:
       'The grand variety box featuring milk cashew, dark cashew, vanilla layers, and tropical fruit bites.',
     description: `Can’t choose just one? Experience the complete Coorg chocolate collection in one stunning box.
@@ -1141,7 +1141,7 @@ Net Weight: 250g (Price per 100g: ₹142/-).`,
     name: 'Premium Blackcurrant Chocolate',
     slug: 'premium-blackcurrant-chocolate',
     aliases: ['blackcurrant-chocolate', 'purple-chocolate'],
-    tagline: 'A Burst of Berry Goodness in Every Bite! 💜',
+    tagline: 'A Burst of Berry Goodness in Every Bite!',
     shortDescription:
       'Exquisite purple chocolate infused with tangy wild blackcurrants and creamy cocoa butter.',
     description: `COORG COFFEE — Taste the Colour of Happiness!
@@ -1198,7 +1198,7 @@ Net Weight: 250g (Price per 100g: ₹152/-).`,
     name: 'Premium White Chocolate Crispy Balls',
     slug: 'white-chocolate-crispy-balls',
     aliases: ['white-crispy-balls', 'crispy-white-balls'],
-    tagline: 'Creamy White Chocolate with a Crunchy Surprise! 🤍',
+    tagline: 'Creamy White Chocolate with a Crunchy Surprise!',
     shortDescription:
       'Golden toasted crispy malt balls smothered in thick, creamy vanilla white chocolate.',
     description: `COORG COFFEE — Indulge in the Creamy Crisp Goodness!
@@ -1256,7 +1256,7 @@ Net Weight: 250g (Price per 100g: ₹178/-).`,
     name: 'Coorg Homemade Kiwi Wine',
     slug: 'coorg-homemade-kiwi-wine',
     aliases: ['kiwi-wine', 'coorg-kiwi-wine'],
-    tagline: 'Refreshing & Tangy Estate Kiwi Infusion 🥝🍷',
+    tagline: 'Refreshing & Tangy Estate Kiwi Infusion',
     shortDescription:
       'Crisp, aromatic Coorg homemade kiwi wine naturally fermented from fresh estate kiwi pulp, boiled water, and sprouted grains.',
     description: `Coorg Homemade Kiwi Wine is an authentic Kodagu estate specialty handcrafted in small artisanal batches following traditional Coorg home-brewing methods.
@@ -1329,7 +1329,7 @@ It offers a crisp, lively acidity and bright tropical sweetness, making it a del
     name: 'Coorg Homemade Bird Eye Chilli Wine',
     slug: 'coorg-homemade-bird-eye-chilli-wine',
     aliases: ['bird-eye-chilli-wine', 'chilli-wine'],
-    tagline: 'Fiery Zing Meets Sweet Estate Fermentation 🌶️🍷',
+    tagline: 'Fiery Zing Meets Sweet Estate Fermentation',
     shortDescription:
       'Coorg’s iconic Bird’s Eye Chilli (Parangi Malu) wine. Smooth, naturally sweet with a warm, exhilarating spice kick on the finish.',
     description: `A true Coorg legend and conversation starter! Our Bird Eye Chilli Wine is handcrafted using indigenous Kodagu bird's eye chillies (known locally as Parangi Malu), revered for their intense aromatics and fiery character.
@@ -1402,7 +1402,7 @@ Sip slowly to appreciate this unique fusion of sweet fruit wine craftsmanship an
     name: 'Coorg Homemade Pepper Wine',
     slug: 'coorg-homemade-pepper-wine',
     aliases: ['pepper-wine', 'black-pepper-wine'],
-    tagline: 'Aromatic Coorg Black Pepper with Warm Spice Notes 🌿🍷',
+    tagline: 'Aromatic Coorg Black Pepper with Warm Spice Notes',
     shortDescription:
       'Handcrafted from estate black pepper berries. A soothing, aromatic wine with gentle natural sweetness and comforting peppery warmth.',
     description: `Coorg is universally celebrated as the spice bowl of India, and our Pepper Wine pays homage to the legendary black gold of Kodagu.
@@ -1475,7 +1475,7 @@ The result is an aromatic, amber-hued wine that delivers a soothing sweetness ba
     name: 'Coorg Homemade Star Apple Wine',
     slug: 'coorg-homemade-star-apple-wine',
     aliases: ['star-apple-wine', 'star-fruit-wine'],
-    tagline: 'Luscious Tropical Star Apple with Gentle Floral Sweetness ⭐🍷',
+    tagline: 'Luscious Tropical Star Apple with Gentle Floral Sweetness',
     shortDescription:
       'Exotic tropical star apple nectar naturally fermented to perfection. Light golden, fragrant, and softly sweet with a delicate floral bouquet.',
     description: `Harvested from sweet tropical star apple (Carambola) trees flourishing in the microclimate of Coorg river valleys.
@@ -1548,7 +1548,7 @@ Exceptionally light and easy to enjoy, it is an exquisite afternoon wine that de
     name: 'Coorg Homemade Red Wine',
     slug: 'coorg-homemade-red-wine',
     aliases: ['red-wine', 'coorg-red-wine'],
-    tagline: 'Classic Coorg Heritage Red Wine with Deep Berry Notes 🍇🍷',
+    tagline: 'Classic Coorg Heritage Red Wine with Deep Berry Notes',
     shortDescription:
       'The timeless Kodagu classic. Rich ruby-red wine naturally fermented from select grapes and estate fruit pulp. Smooth, velvety, and sweet.',
     description: `No trip to Kodagu is complete without experiencing authentic Coorg Homemade Red Wine. Handcrafted following treasured family recipes passed down across generations.
@@ -1621,7 +1621,7 @@ Generous in flavor and deeply satisfying, it is the quintessential home-brewed w
     name: 'Coorg Homemade Mulberry Wine',
     slug: 'coorg-homemade-mulberry-wine',
     aliases: ['mulberry-wine', 'coorg-mulberry-wine'],
-    tagline: 'Rich Velvet Mulberry with Deep Wild Berry Aromas 🫐🍷',
+    tagline: 'Rich Velvet Mulberry with Deep Wild Berry Aromas',
     shortDescription:
       'Exquisite royal purple wine handcrafted from ripe Coorg mulberries. Velvety, antioxidant-rich, with balanced sweet and tart notes.',
     description: `Hand-gathered from wild mulberry groves that dot the shaded edges of Coorg coffee estates.
@@ -1694,7 +1694,7 @@ Rich in natural fruit antioxidants and delightfully smooth from the first sip to
     name: 'Coorg Homemade Strawberry Wine',
     slug: 'coorg-homemade-strawberry-wine',
     aliases: ['strawberry-wine', 'coorg-strawberry-wine'],
-    tagline: 'Blush Pink Sweetness Bursting with Ripe Strawberry Notes 🍓🍷',
+    tagline: 'Blush Pink Sweetness Bursting with Ripe Strawberry Notes',
     shortDescription:
       'Delicate blush-toned wine naturally fermented from fresh hill strawberries. Sweet, intensely aromatic, and wonderfully charming.',
     description: `Sweet, romantic, and beautifully fragrant. Our Strawberry Wine is handcrafted using fresh, plump strawberries harvested from high-elevation hill farms.

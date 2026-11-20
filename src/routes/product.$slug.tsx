@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router';
-import { Star, ShieldCheck, Truck, Plus, Minus, Heart, Share2, Check, CheckCircle, ArrowRight } from 'lucide-react';
+import { Star, ShieldCheck, Truck, Plus, Minus, Heart, Share2, Check, CheckCircle, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getProductBySlug, getReviews, addReview } from '../lib/services/store-service';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
@@ -60,7 +60,8 @@ function ProductDetailPage() {
 
   const firstVariant: ProductVariant = product.variants[0]!;
 
-  const [selectedImage, setSelectedImage] = useState(product.images[0] || '');
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
   const [selectedVariantId, setSelectedVariantId] = useState(firstVariant.variantId);
   const [selectedGrind, setSelectedGrind] = useState(
     product.grindOptions && product.grindOptions.length > 0 ? product.grindOptions[0] : ''
@@ -70,6 +71,34 @@ function ProductDetailPage() {
   );
   const [quantity, setQuantity] = useState(1);
   const [copied, setCopied] = useState(false);
+
+  const images = product.images && product.images.length > 0 ? product.images : [''];
+  const safeImageIndex = activeImageIndex < images.length ? activeImageIndex : 0;
+  const currentImage = images[safeImageIndex] || '';
+
+  useEffect(() => {
+    setActiveImageIndex(0);
+    setSelectedVariantId(firstVariant.variantId);
+  }, [slug]);
+
+  const handlePrevImage = () => {
+    setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const handleNextImage = () => {
+    setActiveImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.key === 'ArrowLeft') handlePrevImage();
+      else if (e.key === 'ArrowRight') handleNextImage();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [images.length]);
 
   const [reviewName, setReviewName] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
@@ -132,11 +161,26 @@ function ProductDetailPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-6 space-y-4">
-            <div className="relative aspect-square w-full rounded-2xl overflow-hidden border border-border bg-card shadow-2xl">
+            <div
+              className="group relative aspect-square w-full rounded-2xl overflow-hidden border border-border bg-card shadow-2xl select-none"
+              onTouchStart={(e) => {
+                touchStartX.current = e.touches[0]?.clientX ?? null;
+              }}
+              onTouchEnd={(e) => {
+                if (touchStartX.current === null || images.length <= 1) return;
+                const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
+                const diff = touchStartX.current - endX;
+                if (Math.abs(diff) > 40) {
+                  if (diff > 0) handleNextImage();
+                  else handlePrevImage();
+                }
+                touchStartX.current = null;
+              }}
+            >
               <img
-                src={selectedImage || product.images[0]}
-                alt={product.name}
-                className={`w-full h-full object-cover ${
+                src={currentImage}
+                alt={`${product.name} view ${safeImageIndex + 1}`}
+                className={`w-full h-full object-cover transition-all duration-300 ${
                   allVariantsOutOfStock ? 'grayscale-[30%] contrast-90' : ''
                 }`}
               />
@@ -148,7 +192,11 @@ function ProductDetailPage() {
                     OUT OF STOCK
                   </span>
                   <span className="text-xs text-white/90 font-semibold mt-2">
-                    Batch Sold Out • Fresh Harvest Roasting Soon
+                    {product.categoryId === 'cat-chocolates'
+                      ? 'Batch Sold Out • Fresh Batch Crafting Soon'
+                      : product.categoryId === 'cat-wines'
+                        ? 'Batch Sold Out • Next Batch Aging Soon'
+                        : 'Batch Sold Out • Fresh Harvest Roasting Soon'}
                   </span>
                 </div>
               )}
@@ -158,19 +206,60 @@ function ProductDetailPage() {
                   {product.categoryName}
                 </span>
               </div>
+
+              {images.length > 1 && (
+                <>
+                  <div className="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/15 text-[11px] font-bold text-white tracking-wider">
+                    {safeImageIndex + 1} / {images.length}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handlePrevImage}
+                    aria-label="Previous product image"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/60 hover:bg-[#C89B3C] text-white hover:text-black border border-white/20 backdrop-blur-md flex items-center justify-center transition-all shadow-lg cursor-pointer"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleNextImage}
+                    aria-label="Next product image"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/60 hover:bg-[#C89B3C] text-white hover:text-black border border-white/20 backdrop-blur-md flex items-center justify-center transition-all shadow-lg cursor-pointer"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/55 backdrop-blur-md border border-white/15">
+                    {images.map((_, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setActiveImageIndex(idx)}
+                        aria-label={`View image ${idx + 1}`}
+                        className={`h-2 rounded-full transition-all cursor-pointer ${
+                          safeImageIndex === idx ? 'w-6 bg-[#C89B3C]' : 'w-2 bg-white/50 hover:bg-white/80'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
-            {product.images.length > 1 && (
+            {images.length > 1 && (
               <div className="flex gap-3 overflow-x-auto pb-2">
-                {product.images.map((imgUrl, idx) => (
+                {images.map((imgUrl, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setSelectedImage(imgUrl)}
-                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
-                      selectedImage === imgUrl ? 'border-[#C89B3C] scale-95 shadow-md' : 'border-border opacity-70 hover:opacity-100'
+                    type="button"
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 cursor-pointer ${
+                      safeImageIndex === idx ? 'border-[#C89B3C] scale-95 shadow-md' : 'border-border opacity-70 hover:opacity-100'
                     }`}
                   >
-                    <img src={imgUrl} alt={`${product.name} thumbnail ${idx}`} className="w-full h-full object-cover" />
+                    <img src={imgUrl} alt={`${product.name} thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>

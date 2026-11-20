@@ -302,7 +302,11 @@ export const FeaturedCollection: React.FC = () => {
                       <div className="space-y-2 pt-2 border-t border-border/80">
                         <div className="text-[10px] uppercase font-black tracking-widest text-muted-foreground flex items-center justify-between">
                           <span>
-                            {cat.id === 'cat-chocolates' ? 'INCLUDED VARIETIES' : 'INCLUDED ROASTS'} ({catProducts.length})
+                            {cat.id === 'cat-chocolates'
+                              ? 'INCLUDED VARIETIES'
+                              : cat.id === 'cat-wines'
+                                ? 'INCLUDED FLAVOURS'
+                                : 'INCLUDED ROASTS'} ({catProducts.length})
                           </span>
                           <span className="text-[#C89B3C] font-bold">FROM ₹{IS_TEST_PRICE_MODE ? 1 : cat.startingPrice}</span>
                         </div>

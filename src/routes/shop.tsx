@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createFileRoute, Link, useLocation } from '@tanstack/react-router';
-import { Search, ShoppingBag, ArrowRight, Filter, Sparkles, Truck, Coffee } from 'lucide-react';
+import { Search, ShoppingBag, ArrowRight, Filter, Sparkles, Truck, Coffee, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getProducts, getCategories } from '../lib/services/store-service';
 import { useCart } from '../context/CartContext';
 import { Product } from '../lib/types';
@@ -57,8 +57,12 @@ const CATEGORY_META: Record<string, CategoryMeta> = {
 
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const [imgIndex, setImgIndex] = useState(0);
   const minVariant = product.variants[0];
   if (!minVariant) return null;
+
+  const images = product.images && product.images.length > 0 ? product.images : [''];
+  const safeIdx = imgIndex < images.length ? imgIndex : 0;
 
   const allVariantsOutOfStock = product.variants.every((v) => v.stock <= 0);
   const someOutOfStock = product.variants.some((v) => v.stock <= 0) && !allVariantsOutOfStock;
@@ -76,13 +80,61 @@ function ProductCard({ product }: { product: Product }) {
       allVariantsOutOfStock ? 'opacity-85 ring-1 ring-red-500/20' : ''
     }`}>
       <div className="relative w-full aspect-square overflow-hidden bg-muted">
-        <img
-          src={product.images[0]}
-          alt={product.name}
-          className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
-            allVariantsOutOfStock ? 'grayscale-[35%] contrast-90' : ''
-          }`}
-        />
+        <Link to="/product/$slug" params={{ slug: product.slug }} className="block w-full h-full">
+          <img
+            src={images[safeIdx]}
+            alt={product.name}
+            className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ${
+              allVariantsOutOfStock ? 'grayscale-[35%] contrast-90' : ''
+            }`}
+          />
+        </Link>
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setImgIndex((prev) => (prev - 1 + images.length) % images.length);
+              }}
+              aria-label="Previous image"
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/60 hover:bg-[#C89B3C] text-white hover:text-black border border-white/20 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setImgIndex((prev) => (prev + 1) % images.length);
+              }}
+              aria-label="Next image"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full bg-black/60 hover:bg-[#C89B3C] text-white hover:text-black border border-white/20 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/15">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setImgIndex(idx);
+                  }}
+                  aria-label={`View slide ${idx + 1}`}
+                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                    safeIdx === idx ? 'w-4 bg-[#C89B3C]' : 'w-1.5 bg-white/55 hover:bg-white'
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Sold Out Full Overlay */}
         {allVariantsOutOfStock && (

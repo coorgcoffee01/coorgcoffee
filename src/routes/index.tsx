@@ -29,7 +29,7 @@ function Index() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 relative z-10">
           <div className="space-y-3 max-w-2xl text-center lg:text-left">
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#C89B3C]/20 border border-[#C89B3C]/40 text-[#C89B3C] text-[11px] font-black uppercase tracking-widest">
-              <span>✨ NEW ESTATE RELEASE</span>
+              <span>NEW ESTATE RELEASE</span>
             </div>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white leading-tight">
               HANDCRAFTED COORG <span className="text-[#C89B3C]">ARTISANAL CHOCOLATES</span>
@@ -44,7 +44,7 @@ function Index() {
               search={{ category: 'cat-chocolates' }}
               className="px-8 py-4 rounded-full bg-[#C89B3C] text-black font-extrabold text-xs uppercase tracking-widest hover:bg-[#b08732] active:scale-95 transition-all shadow-xl shadow-[#C89B3C]/20 flex items-center gap-2"
             >
-              <span>EXPLORE ALL 9 CHOCOLATES 🍫</span>
+              <span>EXPLORE ALL 9 CHOCOLATES</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
