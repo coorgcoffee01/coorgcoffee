@@ -91,7 +91,11 @@ function ProductCard({ product }: { product: Product }) {
               OUT OF STOCK
             </span>
             <span className="text-[10px] text-white/90 font-semibold mt-1.5">
-              Sold Out • Fresh Batch Roasting
+              {product.categoryId === 'cat-chocolates'
+                ? 'Sold Out • Fresh Batch Crafting'
+                : product.categoryId === 'cat-wines'
+                  ? 'Sold Out • Next Batch Aging'
+                  : 'Sold Out • Fresh Batch Roasting'}
             </span>
           </div>
         )}
@@ -103,9 +107,9 @@ function ProductCard({ product }: { product: Product }) {
           </span>
           <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#12100E]/85 text-white backdrop-blur-sm border border-white/10 w-fit">
             {product.categoryId === 'cat-chocolates'
-              ? 'Artisanal Chocolate'
+              ? activeVariant.label
               : product.categoryId === 'cat-wines'
-                ? 'Coorg Homemade Wine'
+                ? '750ml Bottle'
                 : product.roastOptions && product.roastOptions.length > 1
                   ? 'Medium & Dark Roast'
                   : `${product.roastLevel} Roast`}
@@ -168,7 +172,11 @@ function ProductCard({ product }: { product: Product }) {
             )}
             <div className="text-[10px] text-muted-foreground mt-0.5 font-medium">
               {allVariantsOutOfStock ? (
-                <span className="text-red-400">Available on next roast</span>
+                <span className="text-red-400">
+                  {product.categoryId === 'cat-chocolates' || product.categoryId === 'cat-wines'
+                    ? 'Available on next batch'
+                    : 'Available on next roast'}
+                </span>
               ) : activeVariant.deliveryFee === 0 ? (
                 <span className="text-emerald-600 dark:text-emerald-400 font-bold">FREE Delivery</span>
               ) : (
@@ -200,7 +208,13 @@ function ProductCard({ product }: { product: Product }) {
                   : buttonBg
               }`}
             >
-              <span>{allVariantsOutOfStock ? 'OUT OF STOCK' : 'SELECT SIZE'}</span>
+              <span>
+                {allVariantsOutOfStock
+                  ? 'OUT OF STOCK'
+                  : product.variants.length > 1
+                    ? 'SELECT SIZE'
+                    : 'VIEW DETAILS'}
+              </span>
               <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
             </Link>
           </div>
