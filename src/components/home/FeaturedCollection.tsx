@@ -97,7 +97,7 @@ const CATEGORY_SHOWCASE: CategoryShowcaseMeta[] = [
     roastTag: 'Handcrafted in Coorg • 9 Varieties',
     countBadge: '9 Varieties',
     startingPrice: 350,
-    image: '/products/chocolates/milk-cashew.jpg?v=20261120',
+    image: '/images/home-artisanal-chocolates.jpg?v=20261120',
     description:
       'Artisanal handcrafted luxury chocolates from the hills of Coorg. Creamy milk cashews, vanilla layers, mango white chocolate, bold dark cashews, crispy balls, and sugar-free treats.',
     highlights: [
@@ -119,7 +119,7 @@ const CATEGORY_SHOWCASE: CategoryShowcaseMeta[] = [
     roastTag: 'Handcrafted in Kodagu • 7 Flavours',
     countBadge: '7 Flavours',
     startingPrice: 499,
-    image: '/products/wines/red-wine.jpg?v=20261117',
+    image: '/images/home-fruit-wines.jpg?v=20261120',
     description:
       'Authentic Coorg homemade fruit wines naturally fermented from fresh estate fruits, herbs, and sprouted grains. Preservative-free in 750ml glass and plastic bottles.',
     highlights: [

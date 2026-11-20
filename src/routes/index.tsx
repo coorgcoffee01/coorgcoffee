@@ -3,7 +3,6 @@ import { HeroSection } from '../components/home/HeroSection';
 import { TrustStrip } from '../components/home/TrustStrip';
 import { FeaturedCollection } from '../components/home/FeaturedCollection';
 import { WhyChooseUs } from '../components/home/WhyChooseUs';
-import { TestimonialsSection } from '../components/home/TestimonialsSection';
 import { CoffeeFaqSection } from '../components/home/CoffeeFaqSection';
 import { Link } from '@tanstack/react-router';
 import { Coffee, ArrowRight, Sparkles } from 'lucide-react';
@@ -32,19 +31,27 @@ function Index() {
               <span>NEW ESTATE RELEASE</span>
             </div>
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl uppercase tracking-tight text-white leading-tight">
-              HANDCRAFTED COORG <span className="text-[#C89B3C]">ARTISANAL CHOCOLATES</span>
+              HANDCRAFTED COORG <span className="text-[#C89B3C]">CHOCOLATES &amp; WINES</span>
             </h2>
             <p className="text-sm sm:text-base text-[#D8C7B2] leading-relaxed">
-              From creamy roasted milk cashews and Madagascan-style vanilla layers to tropical golden mango, bold dark chocolates, crispy cereal pearls, and sugar-free treats. Handcrafted in micro-batches with love from Madikeri estates.
+              From creamy roasted milk cashews and vanilla layers to tropical golden mango and 7 authentic homemade fruit wines fermented from orchard harvest. Handcrafted in micro-batches from Madikeri estates.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+          <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
             <Link
               to="/shop"
               search={{ category: 'cat-chocolates' }}
-              className="px-8 py-4 rounded-full bg-[#C89B3C] text-black font-extrabold text-xs uppercase tracking-widest hover:bg-[#b08732] active:scale-95 transition-all shadow-xl shadow-[#C89B3C]/20 flex items-center gap-2"
+              className="px-6 py-3.5 rounded-full bg-[#C89B3C] text-black font-extrabold text-xs uppercase tracking-widest hover:bg-[#b08732] active:scale-95 transition-all shadow-xl shadow-[#C89B3C]/20 flex items-center gap-2"
             >
-              <span>EXPLORE ALL 9 CHOCOLATES</span>
+              <span>EXPLORE CHOCOLATES</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/shop"
+              search={{ category: 'cat-wines' }}
+              className="px-6 py-3.5 rounded-full bg-[#2A1F18] border border-[#C89B3C]/50 text-[#E5C16C] font-extrabold text-xs uppercase tracking-widest hover:bg-[#382a20] active:scale-95 transition-all shadow-xl flex items-center gap-2"
+            >
+              <span>EXPLORE WINES</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -53,9 +60,6 @@ function Index() {
 
       {/* Why Choose Us Estate Difference */}
       <WhyChooseUs />
-
-      {/* Coffee Lovers Speak (Testimonials Section) */}
-      <TestimonialsSection />
 
       {/* SEO Frequently Asked Questions Knowledge Base */}
       <CoffeeFaqSection />
