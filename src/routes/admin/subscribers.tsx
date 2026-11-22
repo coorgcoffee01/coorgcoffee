@@ -48,7 +48,7 @@ function AdminSubscribersPage() {
   const [originalPrice, setOriginalPrice] = useState<number | ''>('');
   const [newPrice, setNewPrice] = useState<number | ''>('');
   const [ctaText, setCtaText] = useState('SHOP NEW RELEASE');
-  const [ctaUrl, setCtaUrl] = useState('https://webtech-6dfba--staging-t9tcm2ki.web.app/shop');
+  const [ctaUrl, setCtaUrl] = useState('https://coorgcoffees.in/shop');
   const [sendingBroadcast, setSendingBroadcast] = useState(false);
   const [previewModal, setPreviewModal] = useState<string | null>(null);
 

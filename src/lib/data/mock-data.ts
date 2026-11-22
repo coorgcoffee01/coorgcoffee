@@ -1930,7 +1930,7 @@ export const INITIAL_BANNERS: any[] = [
     id: 'ban-1',
     title: 'FRESH HARVEST 2026 COORG ARABICA',
     subtitle: 'Handpicked from misty 4,000ft altitude estates in Madikeri',
-    imageUrl: '/products/hero_section.png',
+    imageUrl: '/products/blend-roasted-beans.jpg',
     ctaText: 'EXPLORE HARVEST',
     ctaLink: '/shop',
     position: 'hero',

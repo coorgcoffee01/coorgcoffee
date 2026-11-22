@@ -76,7 +76,7 @@ export function generateEmailHtml(payload: BroadcastPayload, recipientEmail: str
       break;
   }
 
-  const ctaUrl = payload.ctaUrl || 'https://webtech-6dfba--staging-t9tcm2ki.web.app/shop';
+  const ctaUrl = payload.ctaUrl || 'https://coorgcoffees.in/shop';
   const ctaText = payload.ctaText || 'EXPLORE COORG COFFEE';
 
   return `

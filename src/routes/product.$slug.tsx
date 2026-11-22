@@ -79,7 +79,10 @@ function ProductDetailPage() {
   useEffect(() => {
     setActiveImageIndex(0);
     setSelectedVariantId(firstVariant.variantId);
-  }, [slug]);
+    setSelectedGrind(product.grindOptions && product.grindOptions.length > 0 ? product.grindOptions[0]! : '');
+    setSelectedRoast(product.roastOptions && product.roastOptions.length > 0 ? product.roastOptions[0]! : product.roastLevel);
+    setQuantity(1);
+  }, [slug, product.id]);
 
   const handlePrevImage = () => {
     setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);

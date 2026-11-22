@@ -73,7 +73,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     product: Product,
     variant: ProductVariant,
     quantity = 1,
-    grindOption = 'South Indian Filter Grind',
+    grindOption?: string,
     roastLevel?: string
   ): boolean => {
     const currentProd = getProductBySlug(product.slug) || product;
@@ -86,6 +86,12 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const itemWeight = currentVariant.weightGrams ?? (currentVariant.label.includes('1kg') ? 1000 : 500);
     const itemDeliveryFee = currentVariant.deliveryFee ?? (currentVariant.label.includes('1kg') ? 60 : 70);
     const chosenRoast = roastLevel || currentProd.roastLevel;
+    const resolvedGrind =
+      grindOption !== undefined
+        ? grindOption
+        : currentProd.grindOptions && currentProd.grindOptions.length > 0
+        ? currentProd.grindOptions[0]!
+        : '';
 
     setItems((prevItems) => {
       const existingIdx = prevItems.findIndex(
@@ -93,7 +99,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           i.productId === product.id &&
           i.variantId === variant.variantId &&
           (i.roastLevel || '') === (chosenRoast || '') &&
-          (i.grindOption || '') === (grindOption || '')
+          (i.grindOption || '') === resolvedGrind
       );
 
       if (existingIdx >= 0 && prevItems[existingIdx]) {
@@ -117,8 +123,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           sku: variant.sku,
           unitPrice: variant.salePrice || variant.price,
           quantity: Math.min(quantity, currentVariant.stock),
-          image: variant.image || product.images[0] || 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e',
-          grindOption,
+          image: variant.image || product.images[0] || '/products/blend-roasted-beans.jpg',
+          grindOption: resolvedGrind,
           roastLevel: chosenRoast,
           weightGrams: itemWeight,
           deliveryFee: itemDeliveryFee,

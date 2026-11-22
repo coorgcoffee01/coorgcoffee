@@ -59,11 +59,11 @@ function CheckoutPage() {
             </div>
 
             <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl uppercase tracking-tight text-foreground">
-              FRESH COORG ROAST <span className="shimmer-gold">ON ITS WAY!</span>
+              YOUR COORG ORDER <span className="shimmer-gold">IS ON ITS WAY!</span>
             </h1>
 
             <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto">
-              Your order <span className="font-mono font-bold text-foreground">#{confirmedOrder.orderNumber}</span> has been confirmed. Fresh beans are being roasted, packaged in degassing valve pouches, and dispatched.
+              Your order <span className="font-mono font-bold text-foreground">#{confirmedOrder.orderNumber}</span> has been confirmed. Our Madikeri estate team is carefully preparing and packing your items for express dispatch.
             </p>
           </div>
 
@@ -99,7 +99,7 @@ function CheckoutPage() {
             <div className="space-y-3">
               <h3 className="font-display text-lg uppercase tracking-wide text-foreground flex items-center gap-2">
                 <Coffee className="w-4 h-4 text-[#C89B3C]" />
-                <span>Ordered Roasts ({confirmedOrder.items.length})</span>
+                <span>Ordered Items ({confirmedOrder.items.length})</span>
               </h3>
               <div className="divide-y divide-border/60 rounded-2xl border border-border/60 bg-background/50 overflow-hidden">
                 {confirmedOrder.items.map((item, idx) => (
