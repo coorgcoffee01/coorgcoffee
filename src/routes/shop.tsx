@@ -311,13 +311,9 @@ function ShopPage() {
 
   useEffect(() => {
     const nextCat = getInitialCategory();
-    if (nextCat && nextCat !== 'cat-all') {
-      setSelectedCat(nextCat);
-    }
+    setSelectedCat(nextCat || 'cat-all');
     const nextQ = getInitialQuery();
-    if (nextQ) {
-      setSearchQuery(nextQ);
-    }
+    setSearchQuery(nextQ);
   }, [location.search]);
 
   // Real-time synchronization with inventory & admin updates
@@ -360,16 +356,18 @@ function ShopPage() {
     return b.ratingCount - a.ratingCount;
   });
 
-  // Calculate product counts per category (Exact: Beans = 3, Powder = 2, Filter = 5)
+  // Calculate product counts dynamically for every category (Beans=3, Powder=2, Filter=5, Chocolates=9, Wines=7)
   const categoryCounts: Record<string, number> = {
     'cat-all': allProducts.length,
-    'cat-beans': allProducts.filter((p) => p.categoryId === 'cat-beans').length,
-    'cat-powder': allProducts.filter((p) => p.categoryId === 'cat-powder').length,
-    'cat-filter': allProducts.filter((p) => p.categoryId === 'cat-filter').length,
   };
+  for (const cat of categories) {
+    if (cat.id !== 'cat-all') {
+      categoryCounts[cat.id] = allProducts.filter((p) => p.categoryId === cat.id).length;
+    }
+  }
 
-  // Grouped sections for the "All Coffees" curated view
-  const activeCategories = ['cat-beans', 'cat-powder', 'cat-filter'];
+  // Grouped sections for the "All Products" curated view
+  const activeCategories = ['cat-beans', 'cat-powder', 'cat-filter', 'cat-chocolates', 'cat-wines'];
 
   return (
     <div className="min-h-screen bg-background text-foreground py-10 px-4 md:px-8 transition-colors">
@@ -425,7 +423,7 @@ function ShopPage() {
                 <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Search coffees, roast, grinds..."
+                  placeholder="Search coffees, chocolates, wines..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-background border border-border rounded-full pl-9 pr-4 py-2.5 text-xs font-medium text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-[#C89B3C]"
@@ -454,7 +452,7 @@ function ShopPage() {
         {filtered.length === 0 ? (
           <div className="text-center py-20 bg-card border border-border rounded-2xl space-y-4 max-w-md mx-auto">
             <Coffee className="w-12 h-12 text-[#C89B3C] mx-auto opacity-70" />
-            <h3 className="font-display text-2xl text-foreground">NO COFFEES FOUND</h3>
+            <h3 className="font-display text-2xl text-foreground">NO PRODUCTS FOUND</h3>
             <p className="text-xs text-muted-foreground">
               Try adjusting your search terms or clearing category filters.
             </p>
