@@ -94,11 +94,11 @@ export const HeroSection: React.FC = () => {
           <div className="lg:col-span-6 flex justify-center">
             <div className="w-full max-w-xl rounded-3xl overflow-hidden border-2 border-[#C89B3C]/40 shadow-2xl bg-card">
               <picture>
-                <source srcSet="/products/hero_section.webp" type="image/webp" />
-                <source srcSet="/products/hero_section.jpg" type="image/jpeg" />
+                <source srcSet="/products/hero_section.webp?v=20261126" type="image/webp" />
+                <source srcSet="/products/hero_section.jpg?v=20261126" type="image/jpeg" />
                 <img
-                  src="/products/hero_section.jpg"
-                  alt="Authentic Coorg Coffee Display"
+                  src="/products/hero_section.jpg?v=20261126"
+                  alt="Authentic Coorg Coffee, Artisanal Chocolates &amp; Homemade Fruit Wines"
                   className="w-full h-auto object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-500"
                   loading="eager"
                   decoding="async"
